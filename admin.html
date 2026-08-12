@@ -7,17 +7,17 @@
     <style>
         :root {
             --accent-color: #9146FF;
-            --bg-color: #0f0f11;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --text-main: #ffffff;
+            --bg-color: #09090b; /* Sehr tiefes, modernes Schwarz/Grau */
+            --card-bg: #18181b;
+            --border-color: #27272a;
+            --text-main: #f4f4f5;
             --text-muted: #a1a1aa;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -33,92 +33,171 @@
             justify-content: center;
             height: 100vh;
             text-align: center;
+            background: radial-gradient(circle at center, #18181b 0%, #09090b 100%);
         }
 
-        #login-screen h1 { margin-bottom: 10px; }
-        #login-screen p { color: var(--text-muted); margin-bottom: 30px; }
+        #login-screen h1 { margin-bottom: 10px; font-size: 2.5rem; letter-spacing: -0.02em; }
+        #login-screen p { color: var(--text-muted); margin-bottom: 35px; font-size: 1.1rem; }
 
         .btn {
             background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(145, 70, 255, 0.2);
         }
 
-        .btn:hover { background-color: #a970ff; }
+        .btn:hover { 
+            background-color: #a970ff; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(145, 70, 255, 0.4);
+        }
         
-        .logout-btn { background-color: #3f3f46; margin-left: auto; }
-        .logout-btn:hover { background-color: #52525b; }
+        .logout-btn { 
+            background-color: #27272a; 
+            box-shadow: none;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+        .logout-btn:hover { background-color: #3f3f46; box-shadow: none; }
 
         /* Dashboard */
         #dashboard-screen {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 50px 20px;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 50px;
         }
 
-        .header h1 { margin: 0; color: var(--accent-color); }
+        .header h1 { 
+            margin: 0; 
+            color: var(--text-main); 
+            font-size: 2.2rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .header h1 span { color: var(--accent-color); }
 
+        /* Moderne Bewerbungskarte */
         .bewerbung-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 20px;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, border-color 0.2s;
         }
 
-        .bewerbung-card h2 {
-            margin: 0 0 15px 0;
-            font-size: 1.4rem;
+        .bewerbung-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(145, 70, 255, 0.3);
+        }
+
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed var(--border-color);
         }
 
-        .role-badge {
-            background-color: var(--accent-color);
-            font-size: 0.8rem;
-            padding: 4px 10px;
-            border-radius: 20px;
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Dynamische Badges */
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 8px;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
+        .badge.mod {
+            background: rgba(145, 70, 255, 0.1);
+            color: #c084fc;
+            border: 1px solid rgba(145, 70, 255, 0.2);
+        }
+
+        .badge.vip {
+            background: rgba(250, 204, 21, 0.1);
+            color: #fde047;
+            border: 1px solid rgba(250, 204, 21, 0.2);
+        }
+
+        /* Metadaten (Kurzinfos) */
         .data-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
 
-        .data-item { font-size: 0.95rem; }
-        .data-item strong { color: var(--text-muted); display: block; margin-bottom: 3px; font-size: 0.85rem; text-transform: uppercase; }
+        .data-item { font-size: 1rem; color: var(--text-main); font-weight: 500; }
+        .data-item strong { 
+            color: var(--text-muted); 
+            display: block; 
+            margin-bottom: 6px; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.05em;
+        }
+
+        /* Textblöcke (Lange Antworten) */
+        .text-blocks-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
 
         .text-block {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 20px 25px;
+            border-radius: 12px;
         }
         
-        .text-block strong { color: var(--text-muted); display: block; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;}
-        .text-block p { margin: 0; font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; }
+        .text-block strong { 
+            color: var(--accent-color); 
+            display: block; 
+            margin-bottom: 10px; 
+            font-size: 0.8rem; 
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .text-block p { 
+            margin: 0; 
+            font-size: 1rem; 
+            line-height: 1.6; 
+            white-space: pre-wrap; 
+            color: #d4d4d8;
+        }
 
         @media (max-width: 768px) {
-            .data-grid { grid-template-columns: 1fr; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .header { flex-direction: column; gap: 20px; text-align: center; }
+            .logout-btn { margin-left: 0; }
         }
     </style>
 </head>
@@ -126,20 +205,20 @@
 
     <!-- Login Ansicht -->
     <div id="login-screen">
-        <h1>Bewerbungsdashboard Lerokes</h1>
+        <h1>Dashboard <span>Lerokes</span></h1>
         <p>Nur für autorisierte Team-Mitglieder.</p>
         <button class="btn" id="login-btn">Mit Google einloggen</button>
-        <p id="error-msg" style="color: #ef4444; margin-top: 15px; max-width: 400px; line-height: 1.4;"></p>
+        <p id="error-msg" style="color: #ef4444; margin-top: 20px; max-width: 400px; line-height: 1.5;"></p>
     </div>
 
     <!-- Dashboard Ansicht -->
     <div id="dashboard-screen" class="hidden">
         <div class="header">
-            <h1>Bewerbungen</h1>
-            <button class="btn logout-btn" id="logout-btn">Logout</button>
+            <h1>Eingegangene <span>Bewerbungen</span></h1>
+            <button class="btn logout-btn" id="logout-btn">Ausloggen</button>
         </div>
         <div id="bewerbungen-list">
-            Lade Daten...
+            <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">Bewerbungen werden abgerufen...</p>
         </div>
     </div>
 
@@ -169,7 +248,6 @@
             "lerokes02@gmail.com"
         ];
 
-        // UI Elemente
         const loginScreen = document.getElementById('login-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
         const loginBtn = document.getElementById('login-btn');
@@ -177,27 +255,24 @@
         const errorMsg = document.getElementById('error-msg');
         const listContainer = document.getElementById('bewerbungen-list');
 
-        // Login Logik
+        // Login
         loginBtn.addEventListener('click', () => {
             errorMsg.innerText = "";
             signInWithPopup(auth, provider).catch(error => {
-                console.error("Login Fehler:", error);
-                
-                // Besseres Error-Handling für den file:// Fehler
                 if(error.code === 'auth/operation-not-supported-in-this-environment') {
-                    errorMsg.innerText = "Fehler: Die Datei wurde lokal geöffnet (file://). Bitte hoste die Dateien auf GitHub Pages, um den Login nutzen zu können.";
+                    errorMsg.innerText = "Fehler: Lokale Ausführung blockiert. Bitte über die GitHub Pages URL aufrufen.";
                 } else {
                     errorMsg.innerText = `Fehler beim Login: ${error.message}`;
                 }
             });
         });
 
-        // Logout Logik
+        // Logout
         logoutBtn.addEventListener('click', () => {
             signOut(auth);
         });
 
-        // Auth Status überwachen
+        // Auth Status
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 if (ALLOWED_EMAILS.includes(user.email)) {
@@ -214,14 +289,13 @@
             }
         });
 
-        // Bewerbungen laden
+        // Bewerbungen laden & rendern
         async function loadBewerbungen() {
-            listContainer.innerHTML = '<p>Bewerbungen werden abgerufen...</p>';
             try {
                 const querySnapshot = await getDocs(collection(db, "bewerbungen"));
                 
                 if(querySnapshot.empty) {
-                    listContainer.innerHTML = '<p>Bisher sind noch keine Bewerbungen eingegangen.</p>';
+                    listContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Bisher sind noch keine Bewerbungen eingegangen.</p>';
                     return;
                 }
 
@@ -230,6 +304,7 @@
                     bewerbungen.push({ id: doc.id, ...doc.data() });
                 });
 
+                // Nach Datum sortieren (Neueste zuerst)
                 bewerbungen.sort((a, b) => {
                     const timeA = a.eingereicht_am ? a.eingereicht_am.toMillis() : 0;
                     const timeB = b.eingereicht_am ? b.eingereicht_am.toMillis() : 0;
@@ -239,11 +314,18 @@
                 let html = '';
                 bewerbungen.forEach((data) => {
                     const date = data.eingereicht_am ? new Date(data.eingereicht_am.toDate()).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' }) : 'Gerade eben';
-                    const roleText = data.rolle === 'mod' ? 'Twitch Mod' : 'Twitch VIP';
+                    
+                    // Design basierend auf Rolle anpassen
+                    const isMod = data.rolle === 'mod';
+                    const roleText = isMod ? 'Twitch Mod' : 'Twitch VIP';
+                    const badgeClass = isMod ? 'badge mod' : 'badge vip';
                     
                     html += `
                         <div class="bewerbung-card">
-                            <h2>${data.alter_name || 'Kein Name'} <span class="role-badge">${roleText}</span></h2>
+                            <div class="card-header">
+                                <h2>${data.alter_name || 'Kein Name angegeben'}</h2>
+                                <span class="${badgeClass}">${roleText}</span>
+                            </div>
                             
                             <div class="data-grid">
                                 <div class="data-item"><strong>Eingereicht am</strong>${date}</div>
@@ -253,24 +335,26 @@
                                 <div class="data-item"><strong>Schon geredet?</strong>${data.mit_lerokes_geredet === 'ja' ? 'Ja' : 'Nein'}</div>
                             </div>
 
-                            <div class="text-block">
-                                <strong>Kennt Team/Community</strong>
-                                <p>${data.kennt_team || '-'}</p>
-                            </div>
+                            <div class="text-blocks-container">
+                                <div class="text-block">
+                                    <strong>Kennt Team / Community</strong>
+                                    <p>${data.kennt_team || '-'}</p>
+                                </div>
 
-                            <div class="text-block">
-                                <strong>Nutzt Discord/Twitch seit</strong>
-                                <p>${data.nutzungsdauer || '-'}</p>
-                            </div>
+                                <div class="text-block">
+                                    <strong>Nutzt Discord / Twitch seit</strong>
+                                    <p>${data.nutzungsdauer || '-'}</p>
+                                </div>
 
-                            <div class="text-block">
-                                <strong>Erfahrung in dem Bereich</strong>
-                                <p>${data.erfahrung || '-'}</p>
-                            </div>
+                                <div class="text-block">
+                                    <strong>Erfahrung im Bereich</strong>
+                                    <p>${data.erfahrung || '-'}</p>
+                                </div>
 
-                            <div class="text-block">
-                                <strong>Über die Person / Motivation</strong>
-                                <p>${data.ueber_dich || '-'}</p>
+                                <div class="text-block">
+                                    <strong>Über die Person / Motivation</strong>
+                                    <p>${data.ueber_dich || '-'}</p>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -280,7 +364,7 @@
 
             } catch (error) {
                 console.error("Fehler beim Laden der Daten:", error);
-                listContainer.innerHTML = '<p style="color: #ef4444;">Fehler beim Laden der Bewerbungen. Bitte lade die Seite neu.</p>';
+                listContainer.innerHTML = '<p style="text-align: center; color: #ef4444;">Fehler beim Laden der Bewerbungen. Bitte lade die Seite neu.</p>';
             }
         }
     </script>
