@@ -116,7 +116,7 @@
 
         <!-- DETAIL VIEW (Einzelne Bewerbung) -->
         <div id="detail-view" class="hidden">
-            <button class="btn-secondary" style="margin-bottom: 20px;" onclick="closeDetail()">← Zurück zur Übersicht</button>
+            <button class="btn-secondary" style="margin-bottom: 20px;" onclick="closeDetail()">Zurück zur Übersicht</button>
             <div id="detail-content"></div>
         </div>
 
@@ -124,7 +124,6 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        // WICHTIG: doc, updateDoc und deleteDoc wurden hinzugefügt
         import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -279,9 +278,9 @@
                 <div class="text-block"><strong>Über die Person / Motivation</strong><p>${app.ueber_dich || '-'}</p></div>
 
                 <div class="detail-actions">
-                    <button class="btn-accept" onclick="updateStatus('${id}', 'angenommen')">✓ Annehmen</button>
-                    <button class="btn-reject" onclick="updateStatus('${id}', 'abgelehnt')">✗ Ablehnen</button>
-                    <button class="btn-delete" onclick="deleteBewerbung('${id}')">🗑️ Löschen</button>
+                    <button class="btn-accept" onclick="updateStatus('${id}', 'angenommen')">Annehmen</button>
+                    <button class="btn-reject" onclick="updateStatus('${id}', 'abgelehnt')">Ablehnen</button>
+                    <button class="btn-delete" onclick="deleteBewerbung('${id}')">Löschen</button>
                 </div>
             `;
 
@@ -322,7 +321,7 @@
         };
 
         window.deleteBewerbung = async function(id) {
-            if(confirm("Bist du dir GANZ SICHER, dass du diese Bewerbung für immer löschen möchtest?")) {
+            if(confirm("Bist du dir sicher, dass du diese Bewerbung löschen möchtest?")) {
                 try {
                     await deleteDoc(doc(db, "bewerbungen", id));
                     
