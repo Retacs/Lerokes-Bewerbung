@@ -74,23 +74,34 @@
         .form-section { width: 100%; max-width: 750px; }
         .glass-panel { background: var(--panel-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--panel-border); border-radius: 20px; padding: 50px 40px; box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8); text-align: left; }
 
-        /* Vollbild Erfolgsmeldung */
+        /* Vollbild Erfolgsmeldung mit Blur-Box */
         #success-screen {
-            display: none; /* Standardmäßig versteckt */
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             width: 100vw;
-            text-align: center;
             padding: 20px;
             box-sizing: border-box;
-            animation: fadeIn 0.8s ease;
         }
 
-        #success-screen h1 { font-size: 3.5rem; color: #ffffff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: -0.02em; }
-        #success-screen p { color: var(--text-muted); font-size: 1.2rem; line-height: 1.6; max-width: 600px; }
-        .success-icon { font-size: 5rem; margin-bottom: 20px; }
+        .success-box {
+            background: var(--panel-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 60px 40px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .success-box h1 { font-size: 2.5rem; color: #ffffff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: -0.02em; }
+        .success-box p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin: 0; }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
@@ -119,7 +130,7 @@
             .hero-section h1 { font-size: 2.8rem; }
             .glass-panel { padding: 30px 20px; }
             .role-selector { flex-direction: column; }
-            #success-screen h1 { font-size: 2.5rem; }
+            .success-box h1 { font-size: 2rem; }
         }
     </style>
 </head>
@@ -127,11 +138,12 @@
 
     <div class="background-container"></div>
 
-    <!-- Vollbild Erfolgsmeldung -->
+    <!-- Vollbild Erfolgsmeldung mit Glas-Box -->
     <div id="success-screen">
-        <div class="success-icon">🎉</div>
-        <h1>Bewerbung erfolgreich abgeschickt!</h1>
-        <p>Vielen Dank für deine Zeit und dein Interesse.<br>Wir schauen uns deine Bewerbung an und melden uns bei dir.</p>
+        <div class="success-box">
+            <h1>Bewerbung erfolgreich!</h1>
+            <p>Vielen Dank für deine Zeit und dein Interesse.<br>Wir schauen uns deine Bewerbung an und melden uns bei dir.</p>
+        </div>
     </div>
 
     <!-- Normaler Content Bereich -->
@@ -250,7 +262,7 @@
                 return;
             }
 
-            submitBtn.innerHTML = 'Wird gesendet... ⏳';
+            submitBtn.innerHTML = 'Wird gesendet... ';
             submitBtn.disabled = true;
 
             try {
@@ -267,7 +279,7 @@
                     nutzungsdauer: document.getElementById('usage_time').value,
                     erfahrung: document.getElementById('experience').value,
                     ueber_dich: document.getElementById('about_you').value,
-                    status: 'offen', // Neues Feld für das Dashboard!
+                    status: 'offen',
                     eingereicht_am: serverTimestamp()
                 });
 
@@ -307,7 +319,7 @@
 
             } catch (error) {
                 console.error("Fehler beim Speichern: ", error);
-                submitBtn.innerHTML = 'Fehler beim Senden ❌';
+                submitBtn.innerHTML = 'Fehler beim Senden ';
                 submitBtn.disabled = false;
                 alert("Es gab ein Problem beim Senden. Bitte überprüfe deine Internetverbindung.");
             }
