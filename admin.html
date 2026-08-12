@@ -53,8 +53,11 @@
         .mini-card:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         
         .mini-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .mini-card h3 { margin: 0; font-size: 1.2rem; }
-        .mini-card p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.85rem; }
+        .mini-card h3 { margin: 0; font-size: 1.1rem; }
+        
+        /* Graue Label-Tags für Name und Discord */
+        .info-label { color: var(--text-muted); font-size: 0.8rem; font-weight: normal; margin-right: 4px;}
+        .mini-card p { margin: 5px 0 0 0; font-size: 0.95rem; }
         
         /* Status Badges */
         .badge { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
@@ -92,7 +95,6 @@
 </head>
 <body>
 
-    <!-- Login Ansicht -->
     <div id="login-screen">
         <h1>Dashboard <span>Lerokes</span></h1>
         <p>Nur für autorisierte Team-Mitglieder.</p>
@@ -100,7 +102,6 @@
         <p id="error-msg" style="color: #ef4444; margin-top: 20px;"></p>
     </div>
 
-    <!-- Dashboard Ansicht -->
     <div id="dashboard-screen" class="hidden">
         
         <div class="header">
@@ -109,12 +110,10 @@
             <button class="btn-secondary" id="logout-btn">Ausloggen</button>
         </div>
 
-        <!-- LIST VIEW (Raster) -->
         <div id="list-view">
             <p style="color: var(--text-muted);">Daten werden geladen...</p>
         </div>
 
-        <!-- DETAIL VIEW (Einzelne Bewerbung) -->
         <div id="detail-view" class="hidden">
             <button class="btn-secondary" style="margin-bottom: 20px;" onclick="closeDetail()">Zurück zur Übersicht</button>
             <div id="detail-content"></div>
@@ -146,7 +145,6 @@
             "lerokes02@gmail.com"
         ];
 
-        // UI Elemente
         const loginScreen = document.getElementById('login-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
         const loginBtn = document.getElementById('login-btn');
@@ -157,10 +155,8 @@
         const detailView = document.getElementById('detail-view');
         const detailContent = document.getElementById('detail-content');
 
-        // Globaler Speicher für alle Bewerbungen, damit wir live suchen können
         window.allApplications = [];
 
-        // --- AUTH LOGIK ---
         loginBtn.addEventListener('click', () => {
             signInWithPopup(auth, provider).catch(error => console.error(error));
         });
@@ -179,7 +175,6 @@
             }
         });
 
-        // --- DATEN LADEN ---
         async function loadBewerbungen() {
             listView.innerHTML = '<p style="color: var(--text-muted);">Lade Bewerbungen...</p>';
             try {
@@ -187,11 +182,9 @@
                 window.allApplications = [];
                 
                 querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    window.allApplications.push({ id: doc.id, ...data });
+                    window.allApplications.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Neueste zuerst
                 window.allApplications.sort((a, b) => {
                     const timeA = a.eingereicht_am ? a.eingereicht_am.toMillis() : 0;
                     const timeB = b.eingereicht_am ? b.eingereicht_am.toMillis() : 0;
@@ -200,23 +193,21 @@
 
                 renderList(window.allApplications);
             } catch (error) {
-                console.error("Fehler beim Laden:", error);
+                console.error("Fehler:", error);
                 listView.innerHTML = '<p style="color: #ef4444;">Fehler beim Laden.</p>';
             }
         }
 
-        // --- SUCHE ---
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = window.allApplications.filter(app => {
-                const nameMatch = (app.alter_name || '').toLowerCase().includes(term);
+                const nameMatch = (app.name || app.alter_name || '').toLowerCase().includes(term);
                 const discordMatch = (app.discordTag || '').toLowerCase().includes(term);
                 return nameMatch || discordMatch;
             });
             renderList(filtered);
         });
 
-        // --- RENDER LISTEN-VORSCHAU ---
         function renderList(apps) {
             if(apps.length === 0) {
                 listView.innerHTML = '<p style="color: var(--text-muted);">Keine Bewerbungen gefunden.</p>';
@@ -228,14 +219,18 @@
                 const date = app.eingereicht_am ? new Date(app.eingereicht_am.toDate()).toLocaleDateString('de-DE') : 'Neu';
                 const roleText = app.rolle === 'mod' ? 'Mod' : 'VIP';
                 const badgeClass = app.rolle === 'mod' ? 'badge mod' : 'badge vip';
-                const status = app.status || 'offen'; // Fallback
+                const status = app.status || 'offen';
+                
+                // Fallback für alte und neue Datenstruktur
+                const nameDisplay = app.name || app.alter_name || 'Unbekannt';
+                const alterDisplay = app.alter ? ` (${app.alter})` : '';
                 
                 html += `
                     <div class="mini-card" onclick="showDetail('${app.id}')">
                         <div class="mini-card-header">
                             <div>
-                                <h3>${app.alter_name || 'Unbekannt'}</h3>
-                                <p>${app.discordTag || '-'}</p>
+                                <h3><span class="info-label">Name/Alter:</span>${nameDisplay}${alterDisplay}</h3>
+                                <p><span class="info-label">Discord:</span>${app.discordTag || '-'}</p>
                             </div>
                             <span class="${badgeClass}">${roleText}</span>
                         </div>
@@ -249,7 +244,6 @@
             listView.innerHTML = html;
         }
 
-        // --- RENDER DETAIL-ANSICHT ---
         window.showDetail = function(id) {
             const app = window.allApplications.find(a => a.id === id);
             if(!app) return;
@@ -258,10 +252,14 @@
             const roleText = app.rolle === 'mod' ? 'Twitch Mod' : 'Twitch VIP';
             const badgeClass = app.rolle === 'mod' ? 'badge mod' : 'badge vip';
             const status = app.status || 'offen';
+            
+            // Fallback für alte und neue Datenstruktur
+            const nameDisplay = app.name || app.alter_name || 'Unbekannt';
+            const alterDisplay = app.alter ? ` (${app.alter})` : '';
 
             detailContent.innerHTML = `
                 <div class="detail-header">
-                    <h2>${app.alter_name || 'Kein Name'} <span class="${badgeClass}">${roleText}</span></h2>
+                    <h2><span class="info-label" style="font-size: 1.2rem;">Name/Alter:</span>${nameDisplay}${alterDisplay} <span class="${badgeClass}" style="font-size: 0.8rem; margin-left: 10px; vertical-align: middle;">${roleText}</span></h2>
                     <span class="status-badge ${status}" style="font-size: 1rem; padding: 8px 16px;">Status: ${status.toUpperCase()}</span>
                 </div>
                 
@@ -284,9 +282,8 @@
                 </div>
             `;
 
-            // Ansichten wechseln
             listView.classList.add('hidden');
-            searchInput.style.display = 'none'; // Suchleiste verstecken
+            searchInput.style.display = 'none';
             detailView.classList.remove('hidden');
             window.scrollTo(0, 0);
         };
@@ -297,23 +294,15 @@
             searchInput.style.display = 'block';
         };
 
-        // --- DATENBANK AKTIONEN ---
         window.updateStatus = async function(id, newStatus) {
             try {
-                // In Firebase aktualisieren
                 await updateDoc(doc(db, "bewerbungen", id), { status: newStatus });
-                
-                // Lokal aktualisieren, damit wir nicht alles neu aus dem Internet laden müssen
                 const appIndex = window.allApplications.findIndex(a => a.id === id);
                 if(appIndex > -1) {
                     window.allApplications[appIndex].status = newStatus;
                 }
-                
-                // Detailansicht neu rendern, um den Button-Klick sofort sichtbar zu machen
                 showDetail(id);
-                // Liste im Hintergrund neu rendern
                 renderList(window.allApplications);
-                
             } catch (error) {
                 console.error("Fehler beim Update:", error);
                 alert("Fehler beim Speichern des Status.");
@@ -324,11 +313,7 @@
             if(confirm("Bist du dir sicher, dass du diese Bewerbung löschen möchtest?")) {
                 try {
                     await deleteDoc(doc(db, "bewerbungen", id));
-                    
-                    // Aus dem lokalen Array werfen
                     window.allApplications = window.allApplications.filter(a => a.id !== id);
-                    
-                    // Liste neu rendern und zurück zur Übersicht
                     renderList(window.allApplications);
                     closeDetail();
                 } catch (error) {
