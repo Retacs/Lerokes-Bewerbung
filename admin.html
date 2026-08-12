@@ -7,7 +7,7 @@
     <style>
         :root {
             --accent-color: #9146FF;
-            --bg-color: #09090b; /* Sehr tiefes, modernes Schwarz/Grau */
+            --bg-color: #09090b; 
             --card-bg: #18181b;
             --border-color: #27272a;
             --text-main: #f4f4f5;
@@ -26,179 +26,68 @@
         .hidden { display: none !important; }
 
         /* Login Screen */
-        #login-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            text-align: center;
-            background: radial-gradient(circle at center, #18181b 0%, #09090b 100%);
-        }
-
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; background: radial-gradient(circle at center, #18181b 0%, #09090b 100%); }
         #login-screen h1 { margin-bottom: 10px; font-size: 2.5rem; letter-spacing: -0.02em; }
         #login-screen p { color: var(--text-muted); margin-bottom: 35px; font-size: 1.1rem; }
+        .btn { background-color: var(--accent-color); color: white; border: none; padding: 14px 28px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+        .btn:hover { background-color: #a970ff; transform: translateY(-2px); }
 
-        .btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: 10px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(145, 70, 255, 0.2);
-        }
-
-        .btn:hover { 
-            background-color: #a970ff; 
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(145, 70, 255, 0.4);
-        }
+        /* Dashboard Allgemein */
+        #dashboard-screen { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         
-        .logout-btn { 
-            background-color: #27272a; 
-            box-shadow: none;
-            padding: 10px 20px;
-            font-size: 0.95rem;
-        }
-        .logout-btn:hover { background-color: #3f3f46; box-shadow: none; }
-
-        /* Dashboard */
-        #dashboard-screen {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 50px 20px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 50px;
-        }
-
-        .header h1 { 
-            margin: 0; 
-            color: var(--text-main); 
-            font-size: 2.2rem;
-            letter-spacing: -0.02em;
-        }
-        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;}
+        .header h1 { margin: 0; color: var(--text-main); font-size: 2rem; letter-spacing: -0.02em; }
         .header h1 span { color: var(--accent-color); }
-
-        /* Moderne Bewerbungskarte */
-        .bewerbung-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .bewerbung-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(145, 70, 255, 0.3);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px dashed var(--border-color);
-        }
-
-        .card-header h2 {
-            margin: 0;
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        /* Dynamische Badges */
-        .badge {
-            font-size: 0.75rem;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .badge.mod {
-            background: rgba(145, 70, 255, 0.1);
-            color: #c084fc;
-            border: 1px solid rgba(145, 70, 255, 0.2);
-        }
-
-        .badge.vip {
-            background: rgba(250, 204, 21, 0.1);
-            color: #fde047;
-            border: 1px solid rgba(250, 204, 21, 0.2);
-        }
-
-        /* Metadaten (Kurzinfos) */
-        .data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .data-item { font-size: 1rem; color: var(--text-main); font-weight: 500; }
-        .data-item strong { 
-            color: var(--text-muted); 
-            display: block; 
-            margin-bottom: 6px; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 0.05em;
-        }
-
-        /* Textblöcke (Lange Antworten) */
-        .text-blocks-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        .text-block {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            padding: 20px 25px;
-            border-radius: 12px;
-        }
         
-        .text-block strong { 
-            color: var(--accent-color); 
-            display: block; 
-            margin-bottom: 10px; 
-            font-size: 0.8rem; 
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .text-block p { 
-            margin: 0; 
-            font-size: 1rem; 
-            line-height: 1.6; 
-            white-space: pre-wrap; 
-            color: #d4d4d8;
-        }
+        /* Suche */
+        .search-bar { flex: 1; min-width: 250px; max-width: 400px; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); color: white; font-size: 1rem; }
+        .search-bar:focus { outline: none; border-color: var(--accent-color); }
 
-        @media (max-width: 768px) {
-            .card-header { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .header { flex-direction: column; gap: 20px; text-align: center; }
-            .logout-btn { margin-left: 0; }
-        }
+        .btn-secondary { background-color: #27272a; color: white; padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s;}
+        .btn-secondary:hover { background-color: #3f3f46; }
+
+        /* --- LIST VIEW (Vorschau-Karten) --- */
+        #list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        
+        .mini-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 15px; }
+        .mini-card:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        
+        .mini-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .mini-card h3 { margin: 0; font-size: 1.2rem; }
+        .mini-card p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.85rem; }
+        
+        /* Status Badges */
+        .badge { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
+        .badge.mod { background: rgba(145, 70, 255, 0.1); color: #c084fc; border: 1px solid rgba(145, 70, 255, 0.2); }
+        .badge.vip { background: rgba(250, 204, 21, 0.1); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.2); }
+        
+        .status-badge { font-size: 0.7rem; font-weight: bold; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; align-self: flex-start; }
+        .status-badge.offen { background: #3f3f46; color: white; }
+        .status-badge.angenommen { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .status-badge.abgelehnt { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+        /* --- DETAIL VIEW (Komplette Bewerbung) --- */
+        #detail-view { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; }
+        
+        .detail-actions { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
+        .btn-accept { background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; }
+        .btn-reject { background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; }
+        .btn-delete { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-accept:hover { background: #059669; }
+        .btn-reject:hover { background: #dc2626; }
+        .btn-delete:hover { background: rgba(239, 68, 68, 0.1); }
+
+        .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .detail-header h2 { margin: 0; font-size: 2rem; display: flex; align-items: center; gap: 15px;}
+        
+        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .data-item { font-size: 1rem; }
+        .data-item strong { color: var(--text-muted); display: block; margin-bottom: 6px; font-size: 0.75rem; text-transform: uppercase; }
+
+        .text-block { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 12px; margin-bottom: 15px;}
+        .text-block strong { color: var(--accent-color); display: block; margin-bottom: 10px; font-size: 0.8rem; text-transform: uppercase;}
+        .text-block p { margin: 0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; color: #d4d4d8; }
+
     </style>
 </head>
 <body>
@@ -208,26 +97,37 @@
         <h1>Dashboard <span>Lerokes</span></h1>
         <p>Nur für autorisierte Team-Mitglieder.</p>
         <button class="btn" id="login-btn">Mit Google einloggen</button>
-        <p id="error-msg" style="color: #ef4444; margin-top: 20px; max-width: 400px; line-height: 1.5;"></p>
+        <p id="error-msg" style="color: #ef4444; margin-top: 20px;"></p>
     </div>
 
     <!-- Dashboard Ansicht -->
     <div id="dashboard-screen" class="hidden">
+        
         <div class="header">
-            <h1>Eingegangene <span>Bewerbungen</span></h1>
-            <button class="btn logout-btn" id="logout-btn">Ausloggen</button>
+            <h1>Bewerbungen</h1>
+            <input type="text" id="search-input" class="search-bar" placeholder="Suchen nach Name oder Discord Tag...">
+            <button class="btn-secondary" id="logout-btn">Ausloggen</button>
         </div>
-        <div id="bewerbungen-list">
-            <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem;">Bewerbungen werden abgerufen...</p>
+
+        <!-- LIST VIEW (Raster) -->
+        <div id="list-view">
+            <p style="color: var(--text-muted);">Daten werden geladen...</p>
         </div>
+
+        <!-- DETAIL VIEW (Einzelne Bewerbung) -->
+        <div id="detail-view" class="hidden">
+            <button class="btn-secondary" style="margin-bottom: 20px;" onclick="closeDetail()">← Zurück zur Übersicht</button>
+            <div id="detail-content"></div>
+        </div>
+
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        // WICHTIG: doc, updateDoc und deleteDoc wurden hinzugefügt
+        import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Firebase Setup
         const firebaseConfig = {
             apiKey: "AIzaSyA48CGXIa3FFe8AOJ0n-uVSkPxHo1EHLOw",
             authDomain: "lerokes-bewerbung.firebaseapp.com",
@@ -242,131 +142,202 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // SICHERHEIT: Erlaubte E-Mails
         const ALLOWED_EMAILS = [
             "jan.hiemer.g@gmail.com",
             "lerokes02@gmail.com"
         ];
 
+        // UI Elemente
         const loginScreen = document.getElementById('login-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
         const loginBtn = document.getElementById('login-btn');
         const logoutBtn = document.getElementById('logout-btn');
-        const errorMsg = document.getElementById('error-msg');
-        const listContainer = document.getElementById('bewerbungen-list');
+        const searchInput = document.getElementById('search-input');
+        
+        const listView = document.getElementById('list-view');
+        const detailView = document.getElementById('detail-view');
+        const detailContent = document.getElementById('detail-content');
 
-        // Login
+        // Globaler Speicher für alle Bewerbungen, damit wir live suchen können
+        window.allApplications = [];
+
+        // --- AUTH LOGIK ---
         loginBtn.addEventListener('click', () => {
-            errorMsg.innerText = "";
-            signInWithPopup(auth, provider).catch(error => {
-                if(error.code === 'auth/operation-not-supported-in-this-environment') {
-                    errorMsg.innerText = "Fehler: Lokale Ausführung blockiert. Bitte über die GitHub Pages URL aufrufen.";
-                } else {
-                    errorMsg.innerText = `Fehler beim Login: ${error.message}`;
-                }
-            });
+            signInWithPopup(auth, provider).catch(error => console.error(error));
         });
 
-        // Logout
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth);
-        });
+        logoutBtn.addEventListener('click', () => { signOut(auth); });
 
-        // Auth Status
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                if (ALLOWED_EMAILS.includes(user.email)) {
-                    loginScreen.classList.add('hidden');
-                    dashboardScreen.classList.remove('hidden');
-                    loadBewerbungen();
-                } else {
-                    errorMsg.innerText = `Zugriff verweigert für: ${user.email}`;
-                    signOut(auth);
-                }
+            if (user && ALLOWED_EMAILS.includes(user.email)) {
+                loginScreen.classList.add('hidden');
+                dashboardScreen.classList.remove('hidden');
+                loadBewerbungen();
             } else {
                 loginScreen.classList.remove('hidden');
                 dashboardScreen.classList.add('hidden');
+                if(user) signOut(auth);
             }
         });
 
-        // Bewerbungen laden & rendern
+        // --- DATEN LADEN ---
         async function loadBewerbungen() {
+            listView.innerHTML = '<p style="color: var(--text-muted);">Lade Bewerbungen...</p>';
             try {
                 const querySnapshot = await getDocs(collection(db, "bewerbungen"));
+                window.allApplications = [];
                 
-                if(querySnapshot.empty) {
-                    listContainer.innerHTML = '<p style="text-align: center; color: var(--text-muted);">Bisher sind noch keine Bewerbungen eingegangen.</p>';
-                    return;
-                }
-
-                const bewerbungen = [];
                 querySnapshot.forEach((doc) => {
-                    bewerbungen.push({ id: doc.id, ...doc.data() });
+                    const data = doc.data();
+                    window.allApplications.push({ id: doc.id, ...data });
                 });
 
-                // Nach Datum sortieren (Neueste zuerst)
-                bewerbungen.sort((a, b) => {
+                // Neueste zuerst
+                window.allApplications.sort((a, b) => {
                     const timeA = a.eingereicht_am ? a.eingereicht_am.toMillis() : 0;
                     const timeB = b.eingereicht_am ? b.eingereicht_am.toMillis() : 0;
                     return timeB - timeA;
                 });
 
-                let html = '';
-                bewerbungen.forEach((data) => {
-                    const date = data.eingereicht_am ? new Date(data.eingereicht_am.toDate()).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' }) : 'Gerade eben';
-                    
-                    // Design basierend auf Rolle anpassen
-                    const isMod = data.rolle === 'mod';
-                    const roleText = isMod ? 'Twitch Mod' : 'Twitch VIP';
-                    const badgeClass = isMod ? 'badge mod' : 'badge vip';
-                    
-                    html += `
-                        <div class="bewerbung-card">
-                            <div class="card-header">
-                                <h2>${data.alter_name || 'Kein Name angegeben'}</h2>
-                                <span class="${badgeClass}">${roleText}</span>
-                            </div>
-                            
-                            <div class="data-grid">
-                                <div class="data-item"><strong>Eingereicht am</strong>${date}</div>
-                                <div class="data-item"><strong>Discord Tag</strong>${data.discordTag || '-'}</div>
-                                <div class="data-item"><strong>Watchtime / Level</strong>${data.watchtime_level || '-'}</div>
-                                <div class="data-item"><strong>Kennt Lerokes seit</strong>${data.kennt_lerokes_seit || '-'}</div>
-                                <div class="data-item"><strong>Schon geredet?</strong>${data.mit_lerokes_geredet === 'ja' ? 'Ja' : 'Nein'}</div>
-                            </div>
-
-                            <div class="text-blocks-container">
-                                <div class="text-block">
-                                    <strong>Kennt Team / Community</strong>
-                                    <p>${data.kennt_team || '-'}</p>
-                                </div>
-
-                                <div class="text-block">
-                                    <strong>Nutzt Discord / Twitch seit</strong>
-                                    <p>${data.nutzungsdauer || '-'}</p>
-                                </div>
-
-                                <div class="text-block">
-                                    <strong>Erfahrung im Bereich</strong>
-                                    <p>${data.erfahrung || '-'}</p>
-                                </div>
-
-                                <div class="text-block">
-                                    <strong>Über die Person / Motivation</strong>
-                                    <p>${data.ueber_dich || '-'}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                listContainer.innerHTML = html;
-
+                renderList(window.allApplications);
             } catch (error) {
-                console.error("Fehler beim Laden der Daten:", error);
-                listContainer.innerHTML = '<p style="text-align: center; color: #ef4444;">Fehler beim Laden der Bewerbungen. Bitte lade die Seite neu.</p>';
+                console.error("Fehler beim Laden:", error);
+                listView.innerHTML = '<p style="color: #ef4444;">Fehler beim Laden.</p>';
             }
         }
+
+        // --- SUCHE ---
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = window.allApplications.filter(app => {
+                const nameMatch = (app.alter_name || '').toLowerCase().includes(term);
+                const discordMatch = (app.discordTag || '').toLowerCase().includes(term);
+                return nameMatch || discordMatch;
+            });
+            renderList(filtered);
+        });
+
+        // --- RENDER LISTEN-VORSCHAU ---
+        function renderList(apps) {
+            if(apps.length === 0) {
+                listView.innerHTML = '<p style="color: var(--text-muted);">Keine Bewerbungen gefunden.</p>';
+                return;
+            }
+
+            let html = '';
+            apps.forEach(app => {
+                const date = app.eingereicht_am ? new Date(app.eingereicht_am.toDate()).toLocaleDateString('de-DE') : 'Neu';
+                const roleText = app.rolle === 'mod' ? 'Mod' : 'VIP';
+                const badgeClass = app.rolle === 'mod' ? 'badge mod' : 'badge vip';
+                const status = app.status || 'offen'; // Fallback
+                
+                html += `
+                    <div class="mini-card" onclick="showDetail('${app.id}')">
+                        <div class="mini-card-header">
+                            <div>
+                                <h3>${app.alter_name || 'Unbekannt'}</h3>
+                                <p>${app.discordTag || '-'}</p>
+                            </div>
+                            <span class="${badgeClass}">${roleText}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <span class="status-badge ${status}">${status}</span>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">${date}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            listView.innerHTML = html;
+        }
+
+        // --- RENDER DETAIL-ANSICHT ---
+        window.showDetail = function(id) {
+            const app = window.allApplications.find(a => a.id === id);
+            if(!app) return;
+
+            const date = app.eingereicht_am ? new Date(app.eingereicht_am.toDate()).toLocaleString('de-DE') : 'Gerade eben';
+            const roleText = app.rolle === 'mod' ? 'Twitch Mod' : 'Twitch VIP';
+            const badgeClass = app.rolle === 'mod' ? 'badge mod' : 'badge vip';
+            const status = app.status || 'offen';
+
+            detailContent.innerHTML = `
+                <div class="detail-header">
+                    <h2>${app.alter_name || 'Kein Name'} <span class="${badgeClass}">${roleText}</span></h2>
+                    <span class="status-badge ${status}" style="font-size: 1rem; padding: 8px 16px;">Status: ${status.toUpperCase()}</span>
+                </div>
+                
+                <div class="data-grid">
+                    <div class="data-item"><strong>Discord Tag</strong>${app.discordTag || '-'}</div>
+                    <div class="data-item"><strong>Eingereicht am</strong>${date}</div>
+                    <div class="data-item"><strong>Watchtime / Level</strong>${app.watchtime_level || '-'}</div>
+                    <div class="data-item"><strong>Schon geredet?</strong>${app.mit_lerokes_geredet === 'ja' ? 'Ja' : 'Nein'}</div>
+                </div>
+
+                <div class="text-block"><strong>Kennt Team / Community</strong><p>${app.kennt_team || '-'}</p></div>
+                <div class="text-block"><strong>Nutzt Discord / Twitch seit</strong><p>${app.nutzungsdauer || '-'}</p></div>
+                <div class="text-block"><strong>Erfahrung im Bereich</strong><p>${app.erfahrung || '-'}</p></div>
+                <div class="text-block"><strong>Über die Person / Motivation</strong><p>${app.ueber_dich || '-'}</p></div>
+
+                <div class="detail-actions">
+                    <button class="btn-accept" onclick="updateStatus('${id}', 'angenommen')">✓ Annehmen</button>
+                    <button class="btn-reject" onclick="updateStatus('${id}', 'abgelehnt')">✗ Ablehnen</button>
+                    <button class="btn-delete" onclick="deleteBewerbung('${id}')">🗑️ Löschen</button>
+                </div>
+            `;
+
+            // Ansichten wechseln
+            listView.classList.add('hidden');
+            searchInput.style.display = 'none'; // Suchleiste verstecken
+            detailView.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        };
+
+        window.closeDetail = function() {
+            detailView.classList.add('hidden');
+            listView.classList.remove('hidden');
+            searchInput.style.display = 'block';
+        };
+
+        // --- DATENBANK AKTIONEN ---
+        window.updateStatus = async function(id, newStatus) {
+            try {
+                // In Firebase aktualisieren
+                await updateDoc(doc(db, "bewerbungen", id), { status: newStatus });
+                
+                // Lokal aktualisieren, damit wir nicht alles neu aus dem Internet laden müssen
+                const appIndex = window.allApplications.findIndex(a => a.id === id);
+                if(appIndex > -1) {
+                    window.allApplications[appIndex].status = newStatus;
+                }
+                
+                // Detailansicht neu rendern, um den Button-Klick sofort sichtbar zu machen
+                showDetail(id);
+                // Liste im Hintergrund neu rendern
+                renderList(window.allApplications);
+                
+            } catch (error) {
+                console.error("Fehler beim Update:", error);
+                alert("Fehler beim Speichern des Status.");
+            }
+        };
+
+        window.deleteBewerbung = async function(id) {
+            if(confirm("Bist du dir GANZ SICHER, dass du diese Bewerbung für immer löschen möchtest?")) {
+                try {
+                    await deleteDoc(doc(db, "bewerbungen", id));
+                    
+                    // Aus dem lokalen Array werfen
+                    window.allApplications = window.allApplications.filter(a => a.id !== id);
+                    
+                    // Liste neu rendern und zurück zur Übersicht
+                    renderList(window.allApplications);
+                    closeDetail();
+                } catch (error) {
+                    console.error("Fehler beim Löschen:", error);
+                    alert("Konnte die Bewerbung nicht löschen.");
+                }
+            }
+        };
     </script>
 </body>
 </html>
