@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lerokes | Team Bewerbung</title>
+    
+    <!-- Konfetti Bibliothek laden -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    
     <style>
         /* Reset & Base */
         :root {
@@ -121,7 +125,7 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.6);
             background-color: rgba(255,255,255,0.05);
             color: transparent; 
-            display: block; /* Entfernt den Abstand unter dem Bild im Link */
+            display: block;
         }
 
         /* Formular Panel */
@@ -139,6 +143,32 @@
             padding: 50px 40px;
             box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
             text-align: left;
+        }
+
+        /* Erfolgsmeldung im Panel */
+        #success-message {
+            display: none;
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #success-message h2 {
+            font-size: 2.2rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            letter-spacing: -0.02em;
+        }
+
+        #success-message p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Formular Elemente */
@@ -325,17 +355,24 @@
             <p>Wir wollen alle keine Kopfschmerzen und einfach eine geile Zeit zusammen verbringen. Wir freuen uns auf <strong>JEDE</strong> neue Person die wir kennenlernen dürfen. Auch bei Personen die wir schon kennen sagen wir gerne Willkommen!</p>
             <p>Auch die Community ist herzlich eingeladen mit uns zu talken und zu zocken. Wenn ihr uns im Voice Channel seht, habt keine Angst wir beißen schon nicht.</p>
             
-            <!-- Lerokes Bild - Klickbar zu YouTube -->
+            <!-- Lerokes Bild -->
             <a href="https://www.youtube.com/watch?v=A0Yh5in9TaM" target="_blank" class="hero-image-link">
                 <img src="lero.png" alt="Lerokes" class="hero-image">
             </a>
         </div>
 
-        <!-- Formular -->
+        <!-- Formular / Erfolgsmeldung Bereich -->
         <div class="form-section">
             <div class="glass-panel">
+                
+                <!-- Erfolgsmeldung (wird standardmäßig versteckt) -->
+                <div id="success-message">
+                    <h2>Bewerbung erfolgreich abgeschickt!</h2>
+                    <p>Vielen Dank für deine Zeit und dein Interesse.<br>Wir schauen uns deine Bewerbung an und melden uns bei dir.</p>
+                </div>
+
+                <!-- Formular -->
                 <form id="applicationForm">
-                    
                     <div class="form-group">
                         <label class="main-label">Für welche Stelle willst du dich bewerben? <span class="asterisk">*</span></label>
                         <div class="role-selector">
@@ -443,6 +480,7 @@
         // Den "Bewerbung senden" Button abfangen
         const submitBtn = document.querySelector('.submit-btn');
         const form = document.getElementById('applicationForm');
+        const successMsg = document.getElementById('success-message');
 
         submitBtn.addEventListener('click', async (e) => {
             e.preventDefault();
@@ -477,17 +515,20 @@
                     eingereicht_am: serverTimestamp()
                 });
 
-                // Erfolgsmeldung
-                submitBtn.innerHTML = 'Erfolgreich gesendet! ✅';
-                submitBtn.style.backgroundColor = '#10b981'; // Grün
-                form.reset();
+                // Formular ausblenden und Erfolgsmeldung einblenden
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
                 
-                // Button zurücksetzen
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalBtnText;
-                    submitBtn.style.backgroundColor = 'var(--accent-color)';
-                    submitBtn.disabled = false;
-                }, 4000);
+                // Zum oberen Rand des Panels scrollen für bessere Sichtbarkeit
+                document.querySelector('.glass-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Konfetti abfeuern (in Twitch-Lila und Weiß)
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#9146FF', '#a970ff', '#ffffff']
+                });
 
             } catch (error) {
                 console.error("Fehler beim Speichern: ", error);
