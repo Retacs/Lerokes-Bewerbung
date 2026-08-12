@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lerokes | Admin Dashboard</title>
+    <style>
+        :root {
+            --accent-color: #9146FF;
+            --bg-color: #0f0f11;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Login Screen */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        #login-screen h1 { margin-bottom: 10px; }
+        #login-screen p { color: var(--text-muted); margin-bottom: 30px; }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background-color: #a970ff; }
+        
+        .logout-btn { background-color: #3f3f46; margin-left: auto; }
+        .logout-btn:hover { background-color: #52525b; }
+
+        /* Dashboard */
+        #dashboard-screen {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header h1 { margin: 0; color: var(--accent-color); }
+
+        .bewerbung-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .bewerbung-card h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .role-badge {
+            background-color: var(--accent-color);
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .data-item { font-size: 0.95rem; }
+        .data-item strong { color: var(--text-muted); display: block; margin-bottom: 3px; font-size: 0.85rem; text-transform: uppercase; }
+
+        .text-block {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .text-block strong { color: var(--text-muted); display: block; margin-bottom: 8px; font-size: 0.85rem; text-transform: uppercase;}
+        .text-block p { margin: 0; font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; }
+
+        @media (max-width: 768px) {
+            .data-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Ansicht -->
+    <div id="login-screen">
+        <h1>Bewerbungsdashboard Lerokes</h1>
+        <p>Nur für autorisierte Team-Mitglieder.</p>
+        <button class="btn" id="login-btn">Mit Google einloggen</button>
+        <p id="error-msg" style="color: #ef4444; margin-top: 15px; max-width: 400px; line-height: 1.4;"></p>
+    </div>
+
+    <!-- Dashboard Ansicht -->
+    <div id="dashboard-screen" class="hidden">
+        <div class="header">
+            <h1>Bewerbungen</h1>
+            <button class="btn logout-btn" id="logout-btn">Logout</button>
+        </div>
+        <div id="bewerbungen-list">
+            Lade Daten...
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Firebase Setup
+        const firebaseConfig = {
+            apiKey: "AIzaSyA48CGXIa3FFe8AOJ0n-uVSkPxHo1EHLOw",
+            authDomain: "lerokes-bewerbung.firebaseapp.com",
+            projectId: "lerokes-bewerbung",
+            storageBucket: "lerokes-bewerbung.firebasestorage.app",
+            messagingSenderId: "504158166281",
+            appId: "1:504158166281:web:e69210f352131dcd5c47d8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        // SICHERHEIT: Erlaubte E-Mails
+        const ALLOWED_EMAILS = [
+            "jan.hiemer.g@gmail.com",
+            "lerokes02@gmail.com"
+        ];
+
+        // UI Elemente
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const errorMsg = document.getElementById('error-msg');
+        const listContainer = document.getElementById('bewerbungen-list');
+
+        // Login Logik
+        loginBtn.addEventListener('click', () => {
+            errorMsg.innerText = "";
+            signInWithPopup(auth, provider).catch(error => {
+                console.error("Login Fehler:", error);
+                
+                // Besseres Error-Handling für den file:// Fehler
+                if(error.code === 'auth/operation-not-supported-in-this-environment') {
+                    errorMsg.innerText = "Fehler: Die Datei wurde lokal geöffnet (file://). Bitte hoste die Dateien auf GitHub Pages, um den Login nutzen zu können.";
+                } else {
+                    errorMsg.innerText = `Fehler beim Login: ${error.message}`;
+                }
+            });
+        });
+
+        // Logout Logik
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        // Auth Status überwachen
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (ALLOWED_EMAILS.includes(user.email)) {
+                    loginScreen.classList.add('hidden');
+                    dashboardScreen.classList.remove('hidden');
+                    loadBewerbungen();
+                } else {
+                    errorMsg.innerText = `Zugriff verweigert für: ${user.email}`;
+                    signOut(auth);
+                }
+            } else {
+                loginScreen.classList.remove('hidden');
+                dashboardScreen.classList.add('hidden');
+            }
+        });
+
+        // Bewerbungen laden
+        async function loadBewerbungen() {
+            listContainer.innerHTML = '<p>Bewerbungen werden abgerufen...</p>';
+            try {
+                const querySnapshot = await getDocs(collection(db, "bewerbungen"));
+                
+                if(querySnapshot.empty) {
+                    listContainer.innerHTML = '<p>Bisher sind noch keine Bewerbungen eingegangen.</p>';
+                    return;
+                }
+
+                const bewerbungen = [];
+                querySnapshot.forEach((doc) => {
+                    bewerbungen.push({ id: doc.id, ...doc.data() });
+                });
+
+                bewerbungen.sort((a, b) => {
+                    const timeA = a.eingereicht_am ? a.eingereicht_am.toMillis() : 0;
+                    const timeB = b.eingereicht_am ? b.eingereicht_am.toMillis() : 0;
+                    return timeB - timeA;
+                });
+
+                let html = '';
+                bewerbungen.forEach((data) => {
+                    const date = data.eingereicht_am ? new Date(data.eingereicht_am.toDate()).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' }) : 'Gerade eben';
+                    const roleText = data.rolle === 'mod' ? 'Twitch Mod' : 'Twitch VIP';
+                    
+                    html += `
+                        <div class="bewerbung-card">
+                            <h2>${data.alter_name || 'Kein Name'} <span class="role-badge">${roleText}</span></h2>
+                            
+                            <div class="data-grid">
+                                <div class="data-item"><strong>Eingereicht am</strong>${date}</div>
+                                <div class="data-item"><strong>Discord Tag</strong>${data.discordTag || '-'}</div>
+                                <div class="data-item"><strong>Watchtime / Level</strong>${data.watchtime_level || '-'}</div>
+                                <div class="data-item"><strong>Kennt Lerokes seit</strong>${data.kennt_lerokes_seit || '-'}</div>
+                                <div class="data-item"><strong>Schon geredet?</strong>${data.mit_lerokes_geredet === 'ja' ? 'Ja' : 'Nein'}</div>
+                            </div>
+
+                            <div class="text-block">
+                                <strong>Kennt Team/Community</strong>
+                                <p>${data.kennt_team || '-'}</p>
+                            </div>
+
+                            <div class="text-block">
+                                <strong>Nutzt Discord/Twitch seit</strong>
+                                <p>${data.nutzungsdauer || '-'}</p>
+                            </div>
+
+                            <div class="text-block">
+                                <strong>Erfahrung in dem Bereich</strong>
+                                <p>${data.erfahrung || '-'}</p>
+                            </div>
+
+                            <div class="text-block">
+                                <strong>Über die Person / Motivation</strong>
+                                <p>${data.ueber_dich || '-'}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                listContainer.innerHTML = html;
+
+            } catch (error) {
+                console.error("Fehler beim Laden der Daten:", error);
+                listContainer.innerHTML = '<p style="color: #ef4444;">Fehler beim Laden der Bewerbungen. Bitte lade die Seite neu.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
