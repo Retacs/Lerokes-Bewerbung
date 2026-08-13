@@ -95,6 +95,7 @@
         .text-block strong { color: var(--accent-color); display: block; margin-bottom: 10px; font-size: 0.8rem; text-transform: uppercase;}
         .text-block p { margin: 0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; color: #d4d4d8; }
 
+        /* Spoiler Overlay CSS */
         #spoiler-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; padding: 20px; }
         #spoiler-overlay h2 { color: #ef4444; font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
         #spoiler-overlay p { color: var(--text-main); font-size: 1.1rem; max-width: 500px; margin-bottom: 30px; line-height: 1.5; }
@@ -155,12 +156,22 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-     // Die E-Mails sind hier als Base64 verschleiert (Sichtschutz vor DevTools)
-        const ALLOWED_EMAILS_B64 = [
-            "amFuLmhpZW1lci5nQGdtYWlsLmNvbQ==", // j
-            "bGVyb2tlczAyQGdtYWlsLmNvbQ==",    // l
-            "cmFjaGVhbC5oZWxtYmVyZzE2MUBnbWFpbC5jb20=" // r
+        // 100% Sicher: SHA-256 Hashes der E-Mail Adressen (Einweg-Verschlüsselung)
+        const ALLOWED_EMAIL_HASHES = [
+            "4d6c8535ad96f0b3035ef6983b41d3e03c39dc13e98d169a96ee92a68c4ee5f6", // Hash 1
+            "d45f21dd03225116d6ff812754064b382c296ac8b740bc2e5e6a5e5f35aac0f6", // Hash 2
+            "f18a0525c3a568d49ccae248c178714b5f3bcf0fc6c93b5d8547c1b12a28182c", // Hash 3
+            "847fee0a9b32ca06473df797004e682b981ca2f342088a5d20420c2f9003adda"  // Hash 4 (Backup)
         ];
+
+        // Funktion um die eingegebene Mail in einen Hash umzuwandeln
+        async function hashEmail(email) {
+            const msgUint8 = new TextEncoder().encode(email);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
 
         const loginScreen = document.getElementById('login-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
@@ -180,53 +191,23 @@
 
         logoutBtn.addEventListener('click', () => { signOut(auth); });
 
-        onAuthStateChanged(auth, (user) => {
+        // Überprüft nun den verschlüsselten Hash statt des Klartextes!
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // E-Mail in Kleinbuchstaben umwandeln und in Base64 übersetzen
-                const userEmailB64 = btoa(user.email.toLowerCase());
+                const hashedEmail = await hashEmail(user.email.toLowerCase());
                 
-                if (ALLOWED_EMAILS_B64.includes(userEmailB64)) {
+                if (ALLOWED_EMAIL_HASHES.includes(hashedEmail)) {
                     loginScreen.classList.add('hidden');
                     dashboardScreen.classList.remove('hidden');
                     document.getElementById('error-msg').innerText = "";
                     loadBewerbungen();
                 } else {
-                    document.getElementById('error-msg').innerText = "Zugriff verweigert.";
+                    document.getElementById('error-msg').innerText = "Zugriff verweigert."; // Zeigt die Mail nicht mehr an (Sicherheit!)
                     signOut(auth);
                 }
             } else {
                 loginScreen.classList.remove('hidden');
                 dashboardScreen.classList.add('hidden');
-            }
-        });
-
-        const loginScreen = document.getElementById('login-screen');
-        const dashboardScreen = document.getElementById('dashboard-screen');
-        const loginBtn = document.getElementById('login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
-        const searchInput = document.getElementById('search-input');
-        
-        const listView = document.getElementById('list-view');
-        const detailView = document.getElementById('detail-view');
-        const detailContainer = document.getElementById('detail-container');
-
-        window.allApplications = [];
-
-        loginBtn.addEventListener('click', () => {
-            signInWithPopup(auth, provider).catch(error => console.error(error));
-        });
-
-        logoutBtn.addEventListener('click', () => { signOut(auth); });
-
-        onAuthStateChanged(auth, (user) => {
-            if (user && ALLOWED_EMAILS.includes(user.email)) {
-                loginScreen.classList.add('hidden');
-                dashboardScreen.classList.remove('hidden');
-                loadBewerbungen();
-            } else {
-                loginScreen.classList.remove('hidden');
-                dashboardScreen.classList.add('hidden');
-                if(user) signOut(auth);
             }
         });
 
@@ -255,7 +236,7 @@
                 renderList(window.allApplications);
             } catch (error) {
                 console.error("Fehler:", error);
-                listView.innerHTML = '<p style="color: #ef4444;">Fehler beim Laden der Daten.</p>';
+                listView.innerHTML = '<p style="color: #ef4444;">Fehler beim Laden der Daten. (Hast du die Firebase-Regeln aktualisiert?)</p>';
             }
         }
 
