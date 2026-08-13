@@ -12,7 +12,9 @@
             --accent-color: #9146FF; 
             --accent-dark: #5b21b6;
             --mod-color: #10b981; 
+            --mod-dark: #047857;
             --vip-color: #ec4899; 
+            --vip-dark: #be185d;
             /* Launcher Colors */
             --launcher-bg: #1e1e1e;
             --launcher-border: #3f3f46;
@@ -26,23 +28,24 @@
         ::-webkit-scrollbar-thumb { background: #555; border: 2px solid #111; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text-main); overflow-x: hidden; scroll-behavior: smooth; }
+        /* BODY HINTERGRUND AUF DUNKEL GESETZT DAMIT NICHTS WEISS DURCHSCHIMMERT */
+        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text-main); background-color: #09090b; overflow-x: hidden; scroll-behavior: smooth; }
         
-        /* Solider, dunkler Hintergrund im Launcher-Style */
-        .background-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #121212; background-image: url('background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; opacity: 0.6; }
+        /* HINTERGRUND WIEDER KNACKIG DUNKEL OHNE WEISSEN SCHLEIER */
+        .background-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.95) 100%), url('background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; }
         
         #main-content { display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 900px; margin: 0 auto; padding: 60px 20px 20px 20px; box-sizing: border-box; gap: 40px; }
 
         .hero-section { width: 100%; text-align: center; }
-        .hero-section h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; text-transform: uppercase; margin: 0 0 20px 0; letter-spacing: -0.02em; text-shadow: 4px 4px 0px rgba(0,0,0,1); }
+        /* TEXT WIEDER NORMAL WEISS OHNE SCHATTEN */
+        .hero-section h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; text-transform: uppercase; margin: 0 0 20px 0; letter-spacing: -0.02em; }
         .hero-section h1 .highlight { color: var(--accent-color); }
         
-        /* Minecraft Tag */
         .badge { display: inline-block; background-color: var(--accent-color); color: #ffffff; font-weight: 800; padding: 6px 14px; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 25px; letter-spacing: 0.05em; border: 2px solid #000; box-shadow: inset 2px 2px 0px rgba(255,255,255,0.3), inset -2px -2px 0px rgba(0,0,0,0.3); }
         
-        .hero-section p { font-size: 1.1rem; color: #d4d4d8; line-height: 1.6; margin-bottom: 15px; max-width: 750px; margin-left: auto; margin-right: auto; text-shadow: 2px 2px 0px rgba(0,0,0,0.8); }
+        /* TEXT WIEDER NORMAL OHNE SCHATTEN */
+        .hero-section p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; max-width: 750px; margin-left: auto; margin-right: auto; }
         
-        /* Solides Bild ohne Schweben */
         .hero-image-link { display: inline-block; width: 100%; max-width: 600px; margin-top: 20px; border-radius: 4px; transition: transform 0.1s; }
         .hero-image-link:active { transform: translateY(4px); }
         .hero-image { width: 100%; height: auto; border: 4px solid #000; box-shadow: inset 0px 0px 0px 2px rgba(255,255,255,0.1), 0 15px 30px rgba(0,0,0,0.8); background-color: #000; display: block; }
@@ -53,11 +56,11 @@
 
         #success-screen { display: none; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; width: 100vw; padding: 20px; box-sizing: border-box; }
         .success-box { background: var(--launcher-bg); border: 2px solid #000; padding: 60px 40px; text-align: center; max-width: 600px; width: 100%; box-shadow: inset 2px 2px 0px rgba(255,255,255,0.1), 0 20px 50px rgba(0,0,0,0.8); }
-        .success-box h1 { font-size: 2.5rem; color: #ffffff; margin-bottom: 20px; text-transform: uppercase; text-shadow: 3px 3px 0px rgba(0,0,0,1); }
+        .success-box h1 { font-size: 2.5rem; color: #ffffff; margin-bottom: 20px; text-transform: uppercase; }
         .success-box p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin: 0; }
 
         .form-group { margin-bottom: 30px; }
-        label.main-label { display: block; margin-bottom: 12px; font-size: 1rem; font-weight: 700; color: var(--text-main); letter-spacing: 0.01em; text-shadow: 1px 1px 0px #000; }
+        label.main-label { display: block; margin-bottom: 12px; font-size: 1rem; font-weight: 700; color: var(--text-main); letter-spacing: 0.01em; }
         .asterisk { color: var(--accent-color); }
         
         /* Minecraft Launcher Inputs */
@@ -73,7 +76,6 @@
         .custom-radio-label input[type="radio"] { position: absolute; opacity: 0; cursor: pointer; }
         .custom-radio-box { display: flex; align-items: center; justify-content: center; padding: 16px 20px; background: #3f3f46; border: 2px solid #000; font-size: 0.95rem; font-weight: 700; color: #fff; transition: all 0.1s; text-align: center; height: 100%; box-sizing: border-box; box-shadow: inset 2px 2px 0px rgba(255,255,255,0.2), inset -2px -4px 0px rgba(0,0,0,0.4); text-shadow: 1px 1px 0px #000; }
         
-        /* Klick-Physik */
         .custom-radio-label:hover .custom-radio-box { background: #52525b; }
         .custom-radio-label input[type="radio"]:checked ~ .custom-radio-box { background: var(--accent-color); box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5), inset -2px -2px 0px rgba(255,255,255,0.2); transform: translateY(4px); padding-top: 18px; padding-bottom: 14px; }
         .custom-radio-label input[type="radio"].radio-no:checked ~ .custom-radio-box { background: #ef4444; }
@@ -90,7 +92,6 @@
         .role-card .emote { width: 64px; height: 64px; margin-bottom: 15px; object-fit: contain; filter: drop-shadow(2px 4px 2px rgba(0,0,0,0.5)); }
         .role-card span { font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; text-shadow: 2px 2px 0px #000; }
         
-        /* Minecraft Click In */
         .role-card.mod.active { background: var(--mod-color); box-shadow: inset 2px 6px 0px rgba(0,0,0,0.4), inset -2px -2px 0px rgba(255,255,255,0.2); transform: translateY(4px); padding-top: 29px; padding-bottom: 21px; }
         .role-card.vip.active { background: var(--vip-color); box-shadow: inset 2px 6px 0px rgba(0,0,0,0.4), inset -2px -2px 0px rgba(255,255,255,0.2); transform: translateY(4px); padding-top: 29px; padding-bottom: 21px; }
 
@@ -285,11 +286,9 @@
 
         // --- MINECRAFT CLICK PARTICLE SYSTEM ---
         window.triggerParticles = function(e, color) {
-            // Verhindert zu viele Partikel, wenn man gedrückt hält
             if (!e.clientX) return; 
             
             const rect = e.target.getBoundingClientRect();
-            // Nimm entweder die Mausposition oder die Mitte des Buttons
             const x = e.clientX || rect.left + rect.width / 2;
             const y = e.clientY || rect.top + rect.height / 2;
 
@@ -300,7 +299,6 @@
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 
-                // Zufällige Flugbahn (Explosion)
                 const angle = Math.random() * Math.PI * 2;
                 const velocity = 30 + Math.random() * 60;
                 const tx = Math.cos(angle) * velocity;
@@ -312,14 +310,11 @@
                 particle.style.setProperty('--rot', rot);
                 
                 document.body.appendChild(particle);
-                
-                // Aufräumen nach Animation
                 setTimeout(() => particle.remove(), 500);
             }
         };
 
         window.selectRole = function(role, element, event) {
-            // Partikel Explosion in der jeweiligen Farbe!
             const color = role === 'mod' ? '#10b981' : '#ec4899';
             triggerParticles(event, color);
 
