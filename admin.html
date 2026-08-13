@@ -34,9 +34,12 @@
         .btn-secondary:hover { background-color: #3f3f46; }
 
         #list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .mini-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 15px; }
+        .mini-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 15px; position: relative; }
         .mini-card:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         
+        /* Warn-Rahmen für verbotene Streams in der Liste */
+        .mini-card.no-stream { border-left: 4px solid #ef4444; }
+
         .mini-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
         .mini-card h3 { margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
         
@@ -51,14 +54,17 @@
         .status-badge.offen { background: #3f3f46; color: white; }
         .status-badge.angenommen { background: rgba(16, 185, 129, 0.2); color: #34d399; }
         .status-badge.abgelehnt { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-        .status-badge.stream-ok { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
-        .status-badge.stream-no { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid rgba(220, 38, 38, 0.5); }
+        
+        /* Die großen, cleanen Stream-Warnungen (Keine Emojis) */
+        .stream-alert { font-size: 0.85rem; font-weight: 900; padding: 8px 16px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; }
+        .stream-alert.ok { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .stream-alert.no { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); }
 
-        #detail-view { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; }
+        #detail-view { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; position: relative; overflow: hidden; }
         .detail-actions { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
-        .btn-accept { background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; }
-        .btn-reject { background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; }
-        .btn-delete { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-accept { background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; transition: 0.2s;}
+        .btn-reject { background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; transition: 0.2s;}
+        .btn-delete { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;}
         .btn-accept:hover { background: #059669; }
         .btn-reject:hover { background: #dc2626; }
         .btn-delete:hover { background: rgba(239, 68, 68, 0.1); }
@@ -74,6 +80,15 @@
         .text-block { background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 12px; margin-bottom: 15px;}
         .text-block strong { color: var(--accent-color); display: block; margin-bottom: 10px; font-size: 0.8rem; text-transform: uppercase;}
         .text-block p { margin: 0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; color: #d4d4d8; }
+
+        /* Spoiler Overlay CSS */
+        #spoiler-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; padding: 20px; border-radius: 16px; }
+        #spoiler-overlay h2 { color: #ef4444; font-size: 2.5rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+        #spoiler-overlay p { color: var(--text-main); font-size: 1.1rem; max-width: 500px; margin-bottom: 30px; line-height: 1.5; }
+        .btn-reveal { background: #ef4444; color: white; padding: 15px 30px; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); }
+        .btn-reveal:hover { background: #dc2626; transform: translateY(-2px); }
+        
+        .blurred-content { filter: blur(15px); opacity: 0.4; pointer-events: none; user-select: none; }
 
     </style>
 </head>
@@ -99,8 +114,11 @@
         </div>
 
         <div id="detail-view" class="hidden">
-            <button class="btn-secondary" style="margin-bottom: 20px;" onclick="closeDetail()">Zurück zur Übersicht</button>
-            <div id="detail-content"></div>
+            <button class="btn-secondary" style="margin-bottom: 20px; position: relative; z-index: 101;" onclick="closeDetail()">Zurück zur Übersicht</button>
+            
+            <!-- Hier landet die Bewerbung (oder der Spoiler-Schutz) -->
+            <div id="detail-container"></div>
+            
         </div>
 
     </div>
@@ -137,7 +155,7 @@
         
         const listView = document.getElementById('list-view');
         const detailView = document.getElementById('detail-view');
-        const detailContent = document.getElementById('detail-content');
+        const detailContainer = document.getElementById('detail-container');
 
         window.allApplications = [];
 
@@ -208,16 +226,15 @@
                 const nameDisplay = app.name || app.alter_name || 'Unbekannt';
                 const alterDisplay = app.alter ? ` (${app.alter})` : '';
 
-                // Stream Indikator in der kleinen Karte
-                let streamIcon = '';
-                if (app.on_stream === 'ja') streamIcon = '<span title="Darf im Stream gezeigt werden" style="margin-left: 8px;">📺</span>';
-                if (app.on_stream === 'nein') streamIcon = '<span title="NICHT im Stream zeigen!" style="margin-left: 8px; filter: grayscale(1);">🚫</span>';
-                
+                let streamClass = app.on_stream === 'nein' ? 'no-stream' : '';
+                let streamLabel = '';
+                if(app.on_stream === 'nein') streamLabel = '<span style="color: #ef4444; font-size: 0.75rem; font-weight: bold; border: 1px solid #ef4444; padding: 2px 6px; border-radius: 4px; margin-left: 10px;">PRIVAT</span>';
+
                 html += `
-                    <div class="mini-card" onclick="showDetail('${app.id}')">
+                    <div class="mini-card ${streamClass}" onclick="showDetail('${app.id}')">
                         <div class="mini-card-header">
                             <div>
-                                <h3><span class="info-label">Name/Alter:</span>${nameDisplay}${alterDisplay} ${streamIcon}</h3>
+                                <h3><span class="info-label">Name/Alter:</span>${nameDisplay}${alterDisplay} ${streamLabel}</h3>
                                 <p><span class="info-label">Discord:</span>${app.discordTag || '-'}</p>
                             </div>
                             <span class="${badgeClass}">${roleText}</span>
@@ -232,6 +249,12 @@
             listView.innerHTML = html;
         }
 
+        // Global funktion um den Spoiler zu entfernen
+        window.removeSpoiler = function() {
+            document.getElementById('spoiler-overlay').style.display = 'none';
+            document.getElementById('actual-content').classList.remove('blurred-content');
+        };
+
         window.showDetail = function(id) {
             const app = window.allApplications.find(a => a.id === id);
             if(!app) return;
@@ -244,17 +267,19 @@
             const nameDisplay = app.name || app.alter_name || 'Unbekannt';
             const alterDisplay = app.alter ? ` (${app.alter})` : '';
 
-            // Warn-Badge für den Stream
-            let streamBadge = '';
+            // Clean Stream Alerts
+            let streamAlert = '';
+            let needsSpoiler = false;
+
             if (app.on_stream === 'ja') {
-                streamBadge = `<span class="status-badge stream-ok">STREAM: ERLAUBT 📺</span>`;
+                streamAlert = `<div class="stream-alert ok">STREAM ERLAUBT</div>`;
             } else if (app.on_stream === 'nein') {
-                streamBadge = `<span class="status-badge stream-no">STREAM: VERBOTEN 🚫</span>`;
+                streamAlert = `<div class="stream-alert no">STREAM VERBOTEN - PRIVAT</div>`;
+                needsSpoiler = true;
             } else {
-                streamBadge = `<span class="status-badge" style="background: #3f3f46;">STREAM: NICHT ANGEGEBEN</span>`;
+                streamAlert = `<div class="stream-alert" style="background: #3f3f46; color: #fff;">STREAM: NICHT ANGEGEBEN</div>`;
             }
 
-            // Dynamische Fragen je nach Rolle einfügen (mit Fallback für alte Bewerbungen)
             let rollenSpezifischeFragen = '';
             if (app.rolle === 'vip' && (app.warum_vip || app.fav_content)) {
                 rollenSpezifischeFragen = `
@@ -262,21 +287,21 @@
                     <div class="text-block"><strong>Was wird am Stream gefeiert?</strong><p>${app.fav_content || '-'}</p></div>
                 `;
             } else {
-                // Mod Fragen (oder Fallback für alte VIP-Bewerbungen, die noch das alte Formular genutzt haben)
                 rollenSpezifischeFragen = `
                     <div class="text-block"><strong>Nutzt Discord / Twitch seit</strong><p>${app.nutzungsdauer || '-'}</p></div>
                     <div class="text-block"><strong>Erfahrung im Bereich</strong><p>${app.erfahrung || '-'}</p></div>
                 `;
             }
 
-            detailContent.innerHTML = `
+            // Das ist der reine Inhalt der Bewerbung
+            let contentHTML = `
                 <div class="detail-header">
                     <div class="detail-header-top">
                         <h2><span class="info-label" style="font-size: 1.2rem;">Name/Alter:</span>${nameDisplay}${alterDisplay} <span class="${badgeClass}" style="font-size: 0.8rem; margin-left: 10px; vertical-align: middle;">${roleText}</span></h2>
                         <span class="status-badge ${status}" style="font-size: 1rem; padding: 8px 16px;">Status: ${status.toUpperCase()}</span>
                     </div>
-                    <div style="margin-top: -5px;">
-                        ${streamBadge}
+                    <div style="margin-top: -5px; width: 100%;">
+                        ${streamAlert}
                     </div>
                 </div>
                 
@@ -297,6 +322,26 @@
                     <button class="btn-delete" onclick="deleteBewerbung('${id}')">Löschen</button>
                 </div>
             `;
+
+            // Spoiler-Schutz Logik
+            if(needsSpoiler) {
+                detailContainer.innerHTML = `
+                    <div id="spoiler-overlay">
+                        <h2>Privatsphäre Schutz</h2>
+                        <p>Diese Bewerbung wurde als <strong>PRIVAT</strong> markiert und darf nicht im Live-Stream gezeigt werden.</p>
+                        <button class="btn-reveal" onclick="removeSpoiler()">Verstanden, Bewerbung anzeigen</button>
+                    </div>
+                    <div id="actual-content" class="blurred-content">
+                        ${contentHTML}
+                    </div>
+                `;
+            } else {
+                detailContainer.innerHTML = `
+                    <div id="actual-content">
+                        ${contentHTML}
+                    </div>
+                `;
+            }
 
             listView.classList.add('hidden');
             searchInput.style.display = 'none';
