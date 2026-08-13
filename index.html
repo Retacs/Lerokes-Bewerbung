@@ -28,29 +28,26 @@
         ::-webkit-scrollbar-thumb { background: #555; border: 2px solid #111; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
 
-        /* BODY HINTERGRUND AUF DUNKEL GESETZT DAMIT NICHTS WEISS DURCHSCHIMMERT */
-        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text-main); background-color: #09090b; overflow-x: hidden; scroll-behavior: smooth; }
+        /* BODY WIEDER DURCHSICHTIG GEMACHT */
+        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text-main); background-color: transparent; overflow-x: hidden; scroll-behavior: smooth; }
         
-        /* HINTERGRUND WIEDER KNACKIG DUNKEL OHNE WEISSEN SCHLEIER */
-        .background-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.95) 100%), url('background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; }
+        /* HINTERGRUND-BILD IST WIEDER SICHTBAR (Mit dunklem Verlauf drüber) */
+        .background-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #09090b; background-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.95) 100%), url('background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; }
         
         #main-content { display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 900px; margin: 0 auto; padding: 60px 20px 20px 20px; box-sizing: border-box; gap: 40px; }
 
         .hero-section { width: 100%; text-align: center; }
-        /* TEXT WIEDER NORMAL WEISS OHNE SCHATTEN */
         .hero-section h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; text-transform: uppercase; margin: 0 0 20px 0; letter-spacing: -0.02em; }
         .hero-section h1 .highlight { color: var(--accent-color); }
         
         .badge { display: inline-block; background-color: var(--accent-color); color: #ffffff; font-weight: 800; padding: 6px 14px; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 25px; letter-spacing: 0.05em; border: 2px solid #000; box-shadow: inset 2px 2px 0px rgba(255,255,255,0.3), inset -2px -2px 0px rgba(0,0,0,0.3); }
         
-        /* TEXT WIEDER NORMAL OHNE SCHATTEN */
         .hero-section p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; max-width: 750px; margin-left: auto; margin-right: auto; }
         
         .hero-image-link { display: inline-block; width: 100%; max-width: 600px; margin-top: 20px; border-radius: 4px; transition: transform 0.1s; }
         .hero-image-link:active { transform: translateY(4px); }
         .hero-image { width: 100%; height: auto; border: 4px solid #000; box-shadow: inset 0px 0px 0px 2px rgba(255,255,255,0.1), 0 15px 30px rgba(0,0,0,0.8); background-color: #000; display: block; }
 
-        /* Launcher Panel */
         .form-section { width: 100%; max-width: 750px; }
         .launcher-panel { background: var(--launcher-bg); border: 2px solid #000; padding: 50px 40px; text-align: left; box-shadow: inset 2px 2px 0px rgba(255,255,255,0.1), inset -2px -2px 0px rgba(0,0,0,0.4), 0 20px 50px rgba(0,0,0,0.8); }
 
@@ -63,14 +60,12 @@
         label.main-label { display: block; margin-bottom: 12px; font-size: 1rem; font-weight: 700; color: var(--text-main); letter-spacing: 0.01em; }
         .asterisk { color: var(--accent-color); }
         
-        /* Minecraft Launcher Inputs */
         input[type="text"], input[type="number"], textarea { width: 100%; padding: 16px 18px; background: var(--launcher-input); border: 2px solid #000; color: var(--text-main); font-size: 1rem; font-weight: 500; box-sizing: border-box; transition: all 0.1s; font-family: inherit; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.8); }
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus { outline: none; border-color: var(--accent-color); background: #181818; }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { opacity: 1; height: 30px; cursor: pointer; }
         
         .hint-image { width: 100%; max-width: 400px; margin-bottom: 12px; border: 2px solid #000; }
         
-        /* 3D KACHELN FÜR JA/NEIN */
         .custom-radio-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .custom-radio-label { display: block; position: relative; cursor: pointer; }
         .custom-radio-label input[type="radio"] { position: absolute; opacity: 0; cursor: pointer; }
@@ -85,7 +80,6 @@
         .legal-checkbox-container label { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; cursor: pointer; }
         .legal-checkbox-container a { color: var(--accent-color); text-decoration: none; font-weight: bold; }
         
-        /* 3D ROLLEN AUSWAHL */
         .role-selector { display: flex; gap: 20px; margin-bottom: 10px; }
         .role-card { flex: 1; padding: 25px 15px; background: #27272a; border: 2px solid #000; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 2px 2px 0px rgba(255,255,255,0.1), inset -2px -6px 0px rgba(0,0,0,0.5); transition: 0.1s; }
         .role-card:hover { background: #3f3f46; }
@@ -95,12 +89,10 @@
         .role-card.mod.active { background: var(--mod-color); box-shadow: inset 2px 6px 0px rgba(0,0,0,0.4), inset -2px -2px 0px rgba(255,255,255,0.2); transform: translateY(4px); padding-top: 29px; padding-bottom: 21px; }
         .role-card.vip.active { background: var(--vip-color); box-shadow: inset 2px 6px 0px rgba(0,0,0,0.4), inset -2px -2px 0px rgba(255,255,255,0.2); transform: translateY(4px); padding-top: 29px; padding-bottom: 21px; }
 
-        /* MINECRAFT LAUNCHER "PLAY" BUTTON */
         .submit-btn { width: 100%; padding: 22px; background-color: var(--accent-color); color: #ffffff; border: 2px solid #000; font-size: 1.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; margin-top: 20px; text-shadow: 2px 2px 0px rgba(0,0,0,0.5); box-shadow: inset 4px 4px 0px rgba(255,255,255,0.25), inset -4px -6px 0px rgba(0,0,0,0.3); transition: 0.1s; }
         .submit-btn:hover { background-color: var(--accent-hover); }
         .submit-btn:active { transform: translateY(4px); box-shadow: inset 4px 6px 0px rgba(0,0,0,0.4), inset -4px -2px 0px rgba(255,255,255,0.2); padding-top: 26px; padding-bottom: 18px; }
 
-        /* Formular Slide-In */
         #dynamic-form-content { display: none; margin-top: 40px; padding-top: 40px; border-top: 4px solid #111; }
         #dynamic-form-content.show { display: block; animation: slideDown 0.3s ease-out; }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
@@ -109,7 +101,6 @@
         .site-footer a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; margin: 0 15px; font-weight: bold; }
         .site-footer a:hover { color: #fff; text-decoration: underline; }
 
-        /* --- JS PARTICLE SYSTEM CSS --- */
         .click-particle { position: fixed; width: 12px; height: 12px; pointer-events: none; z-index: 9999; box-shadow: inset -3px -3px 0px rgba(0,0,0,0.3), inset 2px 2px 0px rgba(255,255,255,0.3); animation: particlePop 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards; }
         @keyframes particlePop { 
             0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; } 
@@ -284,7 +275,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- MINECRAFT CLICK PARTICLE SYSTEM ---
         window.triggerParticles = function(e, color) {
             if (!e.clientX) return; 
             
