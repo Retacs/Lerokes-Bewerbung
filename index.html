@@ -18,41 +18,9 @@
             --input-bg: rgba(255, 255, 255, 0.03);
         }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: var(--text-main);
-            overflow-x: hidden;
-        }
-
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.9) 100%), url('background.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: -1;
-        }
-
-        #main-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 20px 20px 20px;
-            box-sizing: border-box;
-            gap: 50px;
-            transition: opacity 0.3s ease;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: var(--text-main); overflow-x: hidden; }
+        .background-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.9) 100%), url('background.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -1; }
+        #main-content { display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 900px; margin: 0 auto; padding: 60px 20px 20px 20px; box-sizing: border-box; gap: 50px; transition: opacity 0.3s ease; }
 
         .hero-section { width: 100%; text-align: center; }
         .hero-section h1 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; text-transform: uppercase; margin: 0 0 20px 0; letter-spacing: -0.02em; }
@@ -76,13 +44,9 @@
         label.main-label { display: block; margin-bottom: 12px; font-size: 0.95rem; font-weight: 600; color: var(--text-main); letter-spacing: 0.01em; }
         .asterisk { color: var(--accent-color); }
         
-        /* Updated input styles for number input */
         input[type="text"], input[type="number"], textarea { width: 100%; padding: 16px 18px; background: var(--input-bg); border: 1px solid var(--panel-border); border-radius: 10px; color: var(--text-main); font-size: 1rem; box-sizing: border-box; transition: all 0.2s ease; font-family: inherit; }
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus { outline: none; border-color: var(--accent-color); background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.15); }
-        
-        /* Styling for number picker arrows */
-        input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { opacity: 1; height: 30px; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { opacity: 1; height: 30px; }
         
         .hint-image { width: 100%; max-width: 400px; border-radius: 8px; margin-bottom: 12px; border: 1px solid var(--panel-border); }
         
@@ -110,12 +74,7 @@
         .site-footer a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; margin: 0 15px; transition: color 0.2s; }
         .site-footer a:hover { color: var(--text-main); }
 
-        @media (max-width: 768px) {
-            .hero-section h1 { font-size: 2.8rem; }
-            .glass-panel { padding: 30px 20px; }
-            .role-selector { flex-direction: column; }
-            .success-box h1 { font-size: 2rem; }
-        }
+        @media (max-width: 768px) { .hero-section h1 { font-size: 2.8rem; } .glass-panel { padding: 30px 20px; } .role-selector { flex-direction: column; } .success-box h1 { font-size: 2rem; } }
     </style>
 </head>
 <body>
@@ -135,7 +94,6 @@
             <h1>Bewerbung bei<br><span class="highlight">Lerokes</span></h1>
             <p>Wir geben unser bestes und versuchen als Team, Lerokes und euch so gut wie möglich zu unterstützen. Uns ist eine angenehme und chillige Umgebung sehr wichtig.</p>
             <p>Wir wollen alle keine Kopfschmerzen und einfach eine geile Zeit zusammen verbringen. Wir freuen uns auf <strong>JEDE</strong> neue Person die wir kennenlernen dürfen.</p>
-            <p>Im untern Video siehst du Beispiele von Chattern, welche du begegnen könntest. <strong>#kannstegleichabonnieren</strong></p>
             
             <a href="https://www.youtube.com/watch?v=A0Yh5in9TaM" target="_blank" class="hero-image-link">
                 <img src="lero.png" alt="Lerokes" class="hero-image">
@@ -160,7 +118,6 @@
                         </div>
                     </div>
                     
-                    <!-- NEU: Getrennter Name und Alter -->
                     <div class="form-group">
                         <label class="main-label" for="user_name">Wie können wir dich nennen? <span class="asterisk">*</span></label>
                         <input type="text" id="user_name" placeholder="Deine Antwort" required>
@@ -168,7 +125,7 @@
 
                     <div class="form-group">
                         <label class="main-label" for="user_age">Wie alt bist du? <span class="asterisk">*</span></label>
-                        <input type="number" id="user_age" min="14" max="40" placeholder="14+" required>
+                        <input type="number" id="user_age" min="14" max="99" placeholder="18" required>
                     </div>
                     
                     <div class="form-group">
@@ -177,6 +134,15 @@
                         <input type="text" id="discord_tag" placeholder="Deine Antwort" required>
                     </div>
                     
+                    <!-- NEU: Darf die Bewerbung on Stream gezeigt werden? -->
+                    <div class="form-group">
+                        <label class="main-label">Darf deine Bewerbung live im Stream gezeigt und gelesen werden? <span class="asterisk">*</span></label>
+                        <div class="radio-group">
+                            <label class="radio-label"><input type="radio" name="on_stream" value="ja" required> JA, dürft ihr gerne als Content nutzen!</label>
+                            <label class="radio-label"><input type="radio" name="on_stream" value="nein" required> NEIN, bitte nur privat vom Team lesen.</label>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label class="main-label" for="watchtime">Wie lautet deine Watchtime und dein Discord MEE6 Level? <span class="asterisk">*</span></label>
                         <input type="text" id="watchtime" placeholder="Deine Antwort" required>
@@ -199,15 +165,31 @@
                         <label class="main-label" for="know_team">Kennst du Team Mitglieder oder andere Leute aus Lerokes seiner Community? <span class="asterisk">*</span></label>
                         <textarea id="know_team" rows="2" placeholder="Deine Antwort" required></textarea>
                     </div>
-                    
-                    <div class="form-group">
-                        <label class="main-label" for="usage_time">Wie lange benutzt du Discord und Twitch schon? <span class="asterisk">*</span></label>
-                        <textarea id="usage_time" rows="2" placeholder="Deine Antwort" required></textarea>
+
+                    <!-- MODERATOR SPEZIFISCHE FRAGEN -->
+                    <div id="mod_questions">
+                        <div class="form-group">
+                            <label class="main-label" for="usage_time">Wie lange benutzt du Discord und Twitch schon? <span class="asterisk">*</span></label>
+                            <textarea id="usage_time" rows="2" placeholder="Deine Antwort" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="main-label" for="experience">Warst du schon mal in dem Bereich tätig, für den du dich bewerben willst? Wenn JA, wo, wann, Zeitraum? <span class="asterisk">*</span></label>
+                            <textarea id="experience" rows="3" placeholder="Deine Antwort" required></textarea>
+                        </div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label class="main-label" for="experience">Warst du schon mal in dem Bereich tätig, für den du dich bewerben willst? Wenn JA, wo, wann, Zeitraum? <span class="asterisk">*</span></label>
-                        <textarea id="experience" rows="3" placeholder="Deine Antwort" required></textarea>
+
+                    <!-- VIP SPEZIFISCHE FRAGEN (Standardmäßig versteckt) -->
+                    <div id="vip_questions" style="display: none;">
+                        <div class="form-group">
+                            <label class="main-label" for="why_vip">Warum denkst du, dass du den VIP-Badge verdient hast? Was zeichnet dich als Zuschauer aus? <span class="asterisk">*</span></label>
+                            <textarea id="why_vip" rows="3" placeholder="Deine Antwort"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="main-label" for="fav_content">Was feierst du am Stream / am Content am meisten? <span class="asterisk">*</span></label>
+                            <textarea id="fav_content" rows="2" placeholder="Deine Antwort"></textarea>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -220,9 +202,7 @@
                         <label for="dsgvo_check">Ich habe die <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> gelesen und bin damit einverstanden, dass meine eingegebenen Daten zur Bearbeitung der Bewerbung gespeichert werden.</label>
                     </div>
 
-                    <button type="button" class="submit-btn">
-                        Bewerbung senden
-                    </button>
+                    <button type="button" class="submit-btn">Bewerbung senden</button>
                 </form>
             </div>
         </div>
@@ -249,10 +229,32 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Dynamisches Anzeigen der Fragen je nach Rolle
         window.selectRole = function(role, element) {
             document.querySelectorAll('.role-card').forEach(card => card.classList.remove('active'));
             element.classList.add('active');
             document.getElementById('selectedRole').value = role;
+
+            const modQs = document.getElementById('mod_questions');
+            const vipQs = document.getElementById('vip_questions');
+
+            if (role === 'mod') {
+                modQs.style.display = 'block';
+                vipQs.style.display = 'none';
+                
+                document.getElementById('usage_time').required = true;
+                document.getElementById('experience').required = true;
+                document.getElementById('why_vip').required = false;
+                document.getElementById('fav_content').required = false;
+            } else {
+                modQs.style.display = 'none';
+                vipQs.style.display = 'block';
+
+                document.getElementById('usage_time').required = false;
+                document.getElementById('experience').required = false;
+                document.getElementById('why_vip').required = true;
+                document.getElementById('fav_content').required = true;
+            }
         };
 
         const submitBtn = document.querySelector('.submit-btn');
@@ -273,10 +275,12 @@
 
             try {
                 const talked = document.querySelector('input[name="talked"]:checked')?.value || '';
+                const onStream = document.querySelector('input[name="on_stream"]:checked')?.value || '';
+                const role = document.getElementById('selectedRole').value;
 
-                await addDoc(collection(db, "bewerbungen"), {
-                    rolle: document.getElementById('selectedRole').value,
-                    // Die neuen Felder in Firebase einspeisen
+                // Basis-Daten, die beide Rollen haben
+                const bewerbungData = {
+                    rolle: role,
                     name: document.getElementById('user_name').value,
                     alter: document.getElementById('user_age').value,
                     discordTag: document.getElementById('discord_tag').value,
@@ -284,12 +288,22 @@
                     kennt_lerokes_seit: document.getElementById('know_lerokes').value,
                     mit_lerokes_geredet: talked,
                     kennt_team: document.getElementById('know_team').value,
-                    nutzungsdauer: document.getElementById('usage_time').value,
-                    erfahrung: document.getElementById('experience').value,
                     ueber_dich: document.getElementById('about_you').value,
+                    on_stream: onStream, // NEU: Stream-Checkbox
                     status: 'offen',
                     eingereicht_am: serverTimestamp()
-                });
+                };
+
+                // Rollenspezifische Daten hinzufügen
+                if (role === 'mod') {
+                    bewerbungData.nutzungsdauer = document.getElementById('usage_time').value;
+                    bewerbungData.erfahrung = document.getElementById('experience').value;
+                } else {
+                    bewerbungData.warum_vip = document.getElementById('why_vip').value;
+                    bewerbungData.fav_content = document.getElementById('fav_content').value;
+                }
+
+                await addDoc(collection(db, "bewerbungen"), bewerbungData);
 
                 mainContent.style.display = 'none';
                 successScreen.style.display = 'flex';
