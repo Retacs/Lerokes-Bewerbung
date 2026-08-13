@@ -155,12 +155,50 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // Hier wurde die neue E-Mail-Adresse hinzugefügt!
-        const ALLOWED_EMAILS = [
-            "jan.hiemer.g@gmail.com",
-            "lerokes02@gmail.com",
-            "rachael.helmberg161@gmail.com"
+     // Die E-Mails sind hier als Base64 verschleiert (Sichtschutz vor DevTools)
+        const ALLOWED_EMAILS_B64 = [
+            "amFuLmhpZW1lci5nQGdtYWlsLmNvbQ==", // j
+            "bGVyb2tlczAyQGdtYWlsLmNvbQ==",    // l
+            "cmFjaGVhbC5oZWxtYmVyZzE2MUBnbWFpbC5jb20=" // r
         ];
+
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const searchInput = document.getElementById('search-input');
+        
+        const listView = document.getElementById('list-view');
+        const detailView = document.getElementById('detail-view');
+        const detailContainer = document.getElementById('detail-container');
+
+        window.allApplications = [];
+
+        loginBtn.addEventListener('click', () => {
+            signInWithPopup(auth, provider).catch(error => console.error(error));
+        });
+
+        logoutBtn.addEventListener('click', () => { signOut(auth); });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // E-Mail in Kleinbuchstaben umwandeln und in Base64 übersetzen
+                const userEmailB64 = btoa(user.email.toLowerCase());
+                
+                if (ALLOWED_EMAILS_B64.includes(userEmailB64)) {
+                    loginScreen.classList.add('hidden');
+                    dashboardScreen.classList.remove('hidden');
+                    document.getElementById('error-msg').innerText = "";
+                    loadBewerbungen();
+                } else {
+                    document.getElementById('error-msg').innerText = "Zugriff verweigert.";
+                    signOut(auth);
+                }
+            } else {
+                loginScreen.classList.remove('hidden');
+                dashboardScreen.classList.add('hidden');
+            }
+        });
 
         const loginScreen = document.getElementById('login-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
