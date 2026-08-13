@@ -14,52 +14,35 @@
             --text-muted: #a1a1aa;
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
-
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; min-height: 100vh; }
         .hidden { display: none !important; }
 
-        /* Login Screen */
         #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; background: radial-gradient(circle at center, #18181b 0%, #09090b 100%); }
         #login-screen h1 { margin-bottom: 10px; font-size: 2.5rem; letter-spacing: -0.02em; }
         #login-screen p { color: var(--text-muted); margin-bottom: 35px; font-size: 1.1rem; }
         .btn { background-color: var(--accent-color); color: white; border: none; padding: 14px 28px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
         .btn:hover { background-color: #a970ff; transform: translateY(-2px); }
 
-        /* Dashboard Allgemein */
         #dashboard-screen { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
-        
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;}
         .header h1 { margin: 0; color: var(--text-main); font-size: 2rem; letter-spacing: -0.02em; }
         .header h1 span { color: var(--accent-color); }
         
-        /* Suche */
         .search-bar { flex: 1; min-width: 250px; max-width: 400px; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.03); color: white; font-size: 1rem; }
         .search-bar:focus { outline: none; border-color: var(--accent-color); }
-
         .btn-secondary { background-color: #27272a; color: white; padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s;}
         .btn-secondary:hover { background-color: #3f3f46; }
 
-        /* --- LIST VIEW (Vorschau-Karten) --- */
         #list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        
         .mini-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; gap: 15px; }
         .mini-card:hover { border-color: var(--accent-color); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         
         .mini-card-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .mini-card h3 { margin: 0; font-size: 1.1rem; }
+        .mini-card h3 { margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;}
         
-        /* Graue Label-Tags für Name und Discord */
         .info-label { color: var(--text-muted); font-size: 0.8rem; font-weight: normal; margin-right: 4px;}
         .mini-card p { margin: 5px 0 0 0; font-size: 0.95rem; }
         
-        /* Status Badges */
         .badge { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; }
         .badge.mod { background: rgba(145, 70, 255, 0.1); color: #c084fc; border: 1px solid rgba(145, 70, 255, 0.2); }
         .badge.vip { background: rgba(250, 204, 21, 0.1); color: #fde047; border: 1px solid rgba(250, 204, 21, 0.2); }
@@ -68,10 +51,10 @@
         .status-badge.offen { background: #3f3f46; color: white; }
         .status-badge.angenommen { background: rgba(16, 185, 129, 0.2); color: #34d399; }
         .status-badge.abgelehnt { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .status-badge.stream-ok { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .status-badge.stream-no { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid rgba(220, 38, 38, 0.5); }
 
-        /* --- DETAIL VIEW (Komplette Bewerbung) --- */
         #detail-view { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 40px; }
-        
         .detail-actions { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--border-color); }
         .btn-accept { background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; }
         .btn-reject { background: #ef4444; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; flex: 1; }
@@ -80,7 +63,8 @@
         .btn-reject:hover { background: #dc2626; }
         .btn-delete:hover { background: rgba(239, 68, 68, 0.1); }
 
-        .detail-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; flex-direction: column; gap: 15px; }
+        .detail-header-top { width: 100%; display: flex; justify-content: space-between; align-items: center; }
         .detail-header h2 { margin: 0; font-size: 2rem; display: flex; align-items: center; gap: 15px;}
         
         .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; margin-bottom: 30px; }
@@ -221,15 +205,19 @@
                 const badgeClass = app.rolle === 'mod' ? 'badge mod' : 'badge vip';
                 const status = app.status || 'offen';
                 
-                // Fallback für alte und neue Datenstruktur
                 const nameDisplay = app.name || app.alter_name || 'Unbekannt';
                 const alterDisplay = app.alter ? ` (${app.alter})` : '';
+
+                // Stream Indikator in der kleinen Karte
+                let streamIcon = '';
+                if (app.on_stream === 'ja') streamIcon = '<span title="Darf im Stream gezeigt werden" style="margin-left: 8px;">📺</span>';
+                if (app.on_stream === 'nein') streamIcon = '<span title="NICHT im Stream zeigen!" style="margin-left: 8px; filter: grayscale(1);">🚫</span>';
                 
                 html += `
                     <div class="mini-card" onclick="showDetail('${app.id}')">
                         <div class="mini-card-header">
                             <div>
-                                <h3><span class="info-label">Name/Alter:</span>${nameDisplay}${alterDisplay}</h3>
+                                <h3><span class="info-label">Name/Alter:</span>${nameDisplay}${alterDisplay} ${streamIcon}</h3>
                                 <p><span class="info-label">Discord:</span>${app.discordTag || '-'}</p>
                             </div>
                             <span class="${badgeClass}">${roleText}</span>
@@ -253,14 +241,43 @@
             const badgeClass = app.rolle === 'mod' ? 'badge mod' : 'badge vip';
             const status = app.status || 'offen';
             
-            // Fallback für alte und neue Datenstruktur
             const nameDisplay = app.name || app.alter_name || 'Unbekannt';
             const alterDisplay = app.alter ? ` (${app.alter})` : '';
 
+            // Warn-Badge für den Stream
+            let streamBadge = '';
+            if (app.on_stream === 'ja') {
+                streamBadge = `<span class="status-badge stream-ok">STREAM: ERLAUBT 📺</span>`;
+            } else if (app.on_stream === 'nein') {
+                streamBadge = `<span class="status-badge stream-no">STREAM: VERBOTEN 🚫</span>`;
+            } else {
+                streamBadge = `<span class="status-badge" style="background: #3f3f46;">STREAM: NICHT ANGEGEBEN</span>`;
+            }
+
+            // Dynamische Fragen je nach Rolle einfügen (mit Fallback für alte Bewerbungen)
+            let rollenSpezifischeFragen = '';
+            if (app.rolle === 'vip' && (app.warum_vip || app.fav_content)) {
+                rollenSpezifischeFragen = `
+                    <div class="text-block"><strong>Warum VIP?</strong><p>${app.warum_vip || '-'}</p></div>
+                    <div class="text-block"><strong>Was wird am Stream gefeiert?</strong><p>${app.fav_content || '-'}</p></div>
+                `;
+            } else {
+                // Mod Fragen (oder Fallback für alte VIP-Bewerbungen, die noch das alte Formular genutzt haben)
+                rollenSpezifischeFragen = `
+                    <div class="text-block"><strong>Nutzt Discord / Twitch seit</strong><p>${app.nutzungsdauer || '-'}</p></div>
+                    <div class="text-block"><strong>Erfahrung im Bereich</strong><p>${app.erfahrung || '-'}</p></div>
+                `;
+            }
+
             detailContent.innerHTML = `
                 <div class="detail-header">
-                    <h2><span class="info-label" style="font-size: 1.2rem;">Name/Alter:</span>${nameDisplay}${alterDisplay} <span class="${badgeClass}" style="font-size: 0.8rem; margin-left: 10px; vertical-align: middle;">${roleText}</span></h2>
-                    <span class="status-badge ${status}" style="font-size: 1rem; padding: 8px 16px;">Status: ${status.toUpperCase()}</span>
+                    <div class="detail-header-top">
+                        <h2><span class="info-label" style="font-size: 1.2rem;">Name/Alter:</span>${nameDisplay}${alterDisplay} <span class="${badgeClass}" style="font-size: 0.8rem; margin-left: 10px; vertical-align: middle;">${roleText}</span></h2>
+                        <span class="status-badge ${status}" style="font-size: 1rem; padding: 8px 16px;">Status: ${status.toUpperCase()}</span>
+                    </div>
+                    <div style="margin-top: -5px;">
+                        ${streamBadge}
+                    </div>
                 </div>
                 
                 <div class="data-grid">
@@ -271,8 +288,7 @@
                 </div>
 
                 <div class="text-block"><strong>Kennt Team / Community</strong><p>${app.kennt_team || '-'}</p></div>
-                <div class="text-block"><strong>Nutzt Discord / Twitch seit</strong><p>${app.nutzungsdauer || '-'}</p></div>
-                <div class="text-block"><strong>Erfahrung im Bereich</strong><p>${app.erfahrung || '-'}</p></div>
+                ${rollenSpezifischeFragen}
                 <div class="text-block"><strong>Über die Person / Motivation</strong><p>${app.ueber_dich || '-'}</p></div>
 
                 <div class="detail-actions">
