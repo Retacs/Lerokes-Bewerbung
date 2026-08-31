@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lerokes | Bewerbungen Admin</title>
+    <title>Lerokes | Bewerbungen</title>
     
-    <!-- Die offizielle Minecraft Überschriften-Schriftart -->
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 
     <style>
@@ -109,7 +108,6 @@
         /* --- DASHBOARD LAYOUT --- */
         #dashboard-wrapper { display: flex; flex-direction: column; width: 100%; min-height: 100vh; }
 
-        /* --- DER ORIGINALE MINECRAFT.NET MARKETPLACE HINTERGRUND --- */
         .main-content {
             flex-grow: 1; display: flex; flex-direction: column; position: relative;
             background-color: #161616;
@@ -213,6 +211,7 @@
             padding: 15px 25px; cursor: pointer; display: flex; 
             align-items: center; justify-content: space-between; gap: 20px;
             box-shadow: 2px 2px 0px rgba(0,0,0,0.5); transition: 0.1s;
+            position: relative;
         }
         .ticket-card:hover { transform: translateY(-2px); box-shadow: 4px 4px 0px rgba(0,0,0,0.8); background: var(--bg-card); }
         
@@ -239,13 +238,28 @@
         .badge { font-size: 1rem; padding: 4px 8px; border: 2px solid #000; box-shadow: 1px 1px 0px rgba(0,0,0,0.5); }
         .badge-mod { background: var(--mc-green); color: #000; }
         .badge-vip { background: #be185d; color: #fff; }
+        .badge-private { background: #f87171; color: #000; font-weight: bold; }
+
+        /* --- BLUR FÜR PRIVATE BEWERBUNGEN IN DER LISTE --- */
+        .blur-content {
+            filter: blur(5px);
+            user-select: none;
+            pointer-events: none;
+            transition: filter 0.3s;
+        }
+        .private-overlay-badge {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85); border: 2px solid var(--mc-red); color: var(--mc-red);
+            padding: 6px 16px; font-size: 1rem; letter-spacing: 0.05em; z-index: 5;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
 
         /* --- SUCH-LISTE --- */
         .search-list-item {
             display: flex; align-items: center; justify-content: space-between;
             background: rgba(20, 20, 20, 0.95); border: 2px solid #000; padding: 12px 20px;
             margin-bottom: 10px; cursor: pointer; transition: 0.1s;
-            box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.5); position: relative;
         }
         .search-list-item.angenommen { border-color: var(--mc-green); }
         .search-list-item.abgelehnt { border-color: var(--mc-red); }
@@ -295,6 +309,25 @@
         .qa-block p { 
             margin: 0; font-family: "Segoe UI", sans-serif; font-size: 1.05rem; line-height: 1.6; white-space: pre-wrap; font-weight: 500;
         }
+
+        /* PRIVAT / BLUR FÜR DETAILS */
+        .detail-blur {
+            filter: blur(10px);
+            user-select: none;
+            pointer-events: none;
+            transition: filter 0.3s ease;
+        }
+        .unlock-privacy-box {
+            background: #222; border: 4px solid var(--mc-red); padding: 30px; text-align: center; margin-bottom: 30px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+        }
+        .unlock-privacy-box h3 { color: var(--mc-red); margin-top: 0; font-size: 1.6rem; text-shadow: 2px 2px 0px #000; }
+        .unlock-privacy-box p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px; }
+        .btn-unlock {
+            background: var(--mc-red); color: #000; border: 2px solid #000; padding: 12px 24px; font-size: 1.2rem;
+            cursor: pointer; font-family: 'Minecraft', sans-serif; text-transform: uppercase; box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+        .btn-unlock:hover { filter: brightness(1.1); transform: translate(-2px, -2px); box-shadow: 4px 4px 0px rgba(0,0,0,0.8); }
 
         /* ACTION BUTTONS */
         .action-bar { display: flex; gap: 15px; margin-top: 40px; padding-top: 30px; border-top: 2px solid #3f3f46; }
@@ -452,11 +485,11 @@
         // --- ANTI-DEVTOOLS SCHUTZ ---
         document.addEventListener('contextmenu', event => event.preventDefault());
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) { return false; } // F12
+            if(e.keyCode == 123) { return false; } 
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } 
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } 
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Strg+U
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } 
         };
 
         // --- GLOBALE VARIABLEN ---
@@ -487,7 +520,6 @@
                 await fetchApplications();
                 dashboardWrapper.classList.remove('hidden');
                 
-                // Chest erst ausblenden, wenn Firebase-Daten geladen wurden
                 setTimeout(() => {
                     document.getElementById('loading-chest').classList.add('chest-open-effect');
                     setTimeout(() => {
@@ -499,7 +531,7 @@
             } else {
                 dashboardWrapper.classList.add('hidden');
                 loginScreen.classList.remove('hidden');
-                chestOverlay.style.display = 'none'; // Versteckt Ladescreen
+                chestOverlay.style.display = 'none'; 
             }
         });
 
@@ -511,12 +543,10 @@
                 querySnapshot.forEach((docSnap) => {
                     const data = docSnap.data();
                     data.id = docSnap.id;
-                    // Timestamp sicher parsen
                     data.eingereicht_am = data.eingereicht_am ? data.eingereicht_am.toDate() : new Date();
                     window.allApplications.push(data);
                 });
                 
-                // Neueste zuerst
                 window.allApplications.sort((a,b) => b.eingereicht_am - a.eingereicht_am);
                 
                 updateStats();
@@ -607,14 +637,19 @@
                 if(app.status === 'abgelehnt') { statusColor = 'var(--mc-red)'; statusClass = 'abgelehnt'; }
                 if(app.status === 'offen') statusColor = 'var(--mc-nether-purple)';
 
+                const isPrivate = app.on_stream === 'nein';
+                const blurClass = isPrivate ? 'blur-content' : '';
+                const privateBadge = isPrivate ? '<div class="private-overlay-badge mc-font">🔒 Privat / Nicht streamen</div>' : '';
+
                 html += `
                     <div class="search-list-item ${statusClass}" onclick="showDetail('${app.id}')">
-                        <div class="search-main">
+                        ${privateBadge}
+                        <div class="search-main ${blurClass}">
                             <img src="${avatarUrl}" alt="MC Skin" class="search-avatar" onerror="this.src='https://minotar.net/helm/Steve/32.png'">
                             <span class="search-name mc-font">${nameDisplay}</span>
                             <span class="search-discord discord-tag">${app.discordTag || '-'}</span>
                         </div>
-                        <div class="search-status mc-font" style="color: ${statusColor};">${app.status}</div>
+                        <div class="search-status mc-font ${blurClass}" style="color: ${statusColor};">${app.status}</div>
                     </div>
                 `;
             });
@@ -642,16 +677,21 @@
                 if(app.status === 'angenommen') statusClass = 'angenommen';
                 if(app.status === 'abgelehnt') statusClass = 'abgelehnt';
 
+                const isPrivate = app.on_stream === 'nein';
+                const blurClass = isPrivate ? 'blur-content' : '';
+                const privateBadge = isPrivate ? '<div class="private-overlay-badge mc-font">🔒 Privat / Nicht streamen</div>' : '';
+
                 html += `
                     <div class="ticket-card ${statusClass}" onclick="showDetail('${app.id}')">
-                        <div class="ticket-main">
+                        ${privateBadge}
+                        <div class="ticket-main ${blurClass}">
                             <img src="${avatarUrl}" alt="MC Skin" class="ticket-avatar" onerror="this.src='https://minotar.net/helm/Steve/64.png'">
                             <div class="ticket-info">
                                 <h3 class="mc-font">${nameDisplay}</h3>
                                 <p>Discord: <span class="discord-tag">${app.discordTag || '-'}</span></p>
                             </div>
                         </div>
-                        <div class="ticket-meta">
+                        <div class="ticket-meta ${blurClass}">
                             <span class="${badgeClass} mc-font">${roleText}</span>
                             <span class="ticket-date">${date}</span>
                         </div>
@@ -674,11 +714,16 @@
             if (!mcName || mcName.trim() === '') { mcName = 'Steve'; }
             const bodyUrl = `https://minotar.net/armor/body/${mcName}/150.png`;
 
-            // STREAM WARNUNG
-            let privateWarning = '';
-            if(app.on_stream === 'nein') {
-                privateWarning = `<div style="background: var(--mc-red-dark); color: #fff; padding: 15px; margin-bottom: 25px; border: 2px solid #000; font-weight: bold; text-align: center; text-transform: uppercase;">⚠️ ACHTUNG: DARF NICHT IM STREAM GEZEIGT WERDEN! ⚠️</div>`;
-            }
+            const isPrivate = app.on_stream === 'nein';
+            const blurClass = isPrivate ? 'detail-blur' : '';
+
+            let unlockBox = isPrivate ? `
+                <div id="privacy-unlock-box" class="unlock-privacy-box">
+                    <h3 class="mc-font">🔒 Privatsphäre-Schutz aktiv</h3>
+                    <p>Diese Bewerbung darf laut Angabe des Nutzers <strong>nicht im Stream</strong> gezeigt werden und ist deshalb verschlüsselt.</p>
+                    <button class="btn-unlock mc-font" onclick="unlockPrivacy()">Privatsphäre-Schutz aufheben (Lesen)</button>
+                </div>
+            ` : '';
 
             let roleQuestions = app.rolle === 'vip' ? `
                 <div class="qa-block">
@@ -727,45 +772,47 @@
 
             let contentHTML = `
                 <div class="detail-content">
-                    ${privateWarning}
-                    <div class="detail-header">
-                        <img src="${bodyUrl}" alt="MC Skin" class="skin-3d" onerror="this.src='https://minotar.net/armor/body/Steve/150.png'">
-                        <div>
-                            <h2 class="mc-font">${nameDisplay} <span class="${badgeClass}" style="font-size: 1.2rem; margin-left: 15px;">${roleText}</span></h2>
-                            
-                            <div class="data-grid">
-                                <div class="data-item"><strong class="mc-font">Realer Name</strong><span class="discord-tag">${app.name || '-'}</span></div>
-                                <div class="data-item"><strong class="mc-font">Alter</strong><span class="discord-tag">${app.alter || '-'} Jahre</span></div>
-                                <div class="data-item"><strong class="mc-font">Discord Tag</strong><span class="discord-tag">${app.discordTag || '-'}</span></div>
-                                <div class="data-item"><strong class="mc-font">Datum</strong><span class="discord-tag">${date}</span></div>
+                    ${unlockBox}
+                    <div id="detail-inner-content" class="${blurClass}">
+                        <div class="detail-header">
+                            <img src="${bodyUrl}" alt="MC Skin" class="skin-3d" onerror="this.src='https://minotar.net/armor/body/Steve/150.png'">
+                            <div>
+                                <h2 class="mc-font">${nameDisplay} <span class="${badgeClass}" style="font-size: 1.2rem; margin-left: 15px;">${roleText}</span></h2>
+                                
+                                <div class="data-grid">
+                                    <div class="data-item"><strong class="mc-font">Realer Name</strong><span class="discord-tag">${app.name || '-'}</span></div>
+                                    <div class="data-item"><strong class="mc-font">Alter</strong><span class="discord-tag">${app.alter || '-'} Jahre</span></div>
+                                    <div class="data-item"><strong class="mc-font">Discord Tag</strong><span class="discord-tag">${app.discordTag || '-'}</span></div>
+                                    <div class="data-item"><strong class="mc-font">Datum</strong><span class="discord-tag">${date}</span></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="qa-section">
-                        <div class="qa-block">
-                            <strong class="mc-font">Persönliche Vorstellung</strong>
-                            <p>${app.ueber_dich || '-'}</p>
+                        <div class="qa-section">
+                            <div class="qa-block">
+                                <strong class="mc-font">Persönliche Vorstellung</strong>
+                                <p>${app.ueber_dich || '-'}</p>
+                            </div>
+                            <div class="qa-block">
+                                <strong class="mc-font">Watchtime</strong>
+                                <p>${app.watchtime_level || '-'}</p>
+                            </div>
+                            <div class="qa-block">
+                                <strong class="mc-font">Lerokes bekannt seit</strong>
+                                <p>${app.kennt_lerokes_seit || '-'}</p>
+                            </div>
+                            <div class="qa-block">
+                                <strong class="mc-font">Mit Lerokes geredet?</strong>
+                                <p>${app.mit_lerokes_geredet || '-'}</p>
+                            </div>
+                            <div class="qa-block">
+                                <strong class="mc-font">Kennt Team / Community</strong>
+                                <p>${app.kennt_team || '-'}</p>
+                            </div>
+                            ${roleQuestions}
                         </div>
-                        <div class="qa-block">
-                            <strong class="mc-font">Watchtime</strong>
-                            <p>${app.watchtime_level || '-'}</p>
-                        </div>
-                        <div class="qa-block">
-                            <strong class="mc-font">Lerokes bekannt seit</strong>
-                            <p>${app.kennt_lerokes_seit || '-'}</p>
-                        </div>
-                        <div class="qa-block">
-                            <strong class="mc-font">Mit Lerokes geredet?</strong>
-                            <p>${app.mit_lerokes_geredet || '-'}</p>
-                        </div>
-                        <div class="qa-block">
-                            <strong class="mc-font">Kennt Team / Community</strong>
-                            <p>${app.kennt_team || '-'}</p>
-                        </div>
-                        ${roleQuestions}
+                        ${actionArea}
                     </div>
-                    ${actionArea}
                 </div>
             `;
 
@@ -773,6 +820,14 @@
             listViewContainer.classList.add('hidden');
             detailView.classList.remove('hidden');
             window.scrollTo(0, 0);
+        };
+
+        // Funktion um den Privatsphäre-Schutz im Detail-View per Klick aufzuheben
+        window.unlockPrivacy = function() {
+            const inner = document.getElementById('detail-inner-content');
+            const box = document.getElementById('privacy-unlock-box');
+            if(inner) inner.classList.remove('detail-blur');
+            if(box) box.style.display = 'none';
         };
 
         window.closeDetail = function() {
@@ -785,7 +840,6 @@
             const app = window.allApplications.find(a => a.id === id);
             if(!app) return;
 
-            // Push to Firebase
             try {
                 await updateDoc(doc(db, "bewerbungen", id), {
                     status: decision
@@ -823,7 +877,6 @@
             toast.classList.remove('hidden');
             setTimeout(() => toast.classList.add('show'), 10);
 
-            // Lokales Array updaten
             app.status = decision;
 
             setTimeout(() => {
@@ -850,13 +903,11 @@
             const app = window.allApplications.find(a => a.id === id);
             if(!app) return;
 
-            // Push to Firebase
             try {
                 await updateDoc(doc(db, "bewerbungen", id), {
                     status: 'offen'
                 });
                 
-                // Lokales Array updaten
                 app.status = 'offen';
                 updateStats();
                 showDetail(id); 
