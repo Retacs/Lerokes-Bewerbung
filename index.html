@@ -5,31 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lerokes | Team Bewerbung</title>
     
+    <!-- Die offizielle, dicke Minecraft Überschriften-Schriftart -->
     <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
     
     <style>
         :root {
+            /* Dashboard Theme */
             --bg-base: #111111; 
             --bg-surface: #1e1e1e;
             --bg-card: #27272a;
             --border-color: #000;
+            
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
+            
+            /* Nether Lila Akzent */
             --accent-main: #b057f8; 
+            
+            /* Status Colors */
             --mc-green: #4ade80; 
             --mc-green-dark: #00AA00;
             --mc-red: #f87171; 
             --mc-red-dark: #AA0000;
+            
+            /* Rollen-Farben */
             --mod-color: #4ade80; 
             --vip-color: #ff75e6;
-        }
-
-        /* Verhindert das Markieren von Texten für Copy-Paste Diebstahl */
-        body {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
 
         ::-webkit-scrollbar { width: 10px; }
@@ -37,6 +38,7 @@
         ::-webkit-scrollbar-thumb { background: #555; border: 2px solid var(--border-color); }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent-main); }
 
+        /* Minecraft Font für UI-Elemente und Überschriften */
         .mc-font, h1, h2, h3, label.main-label, .submit-btn, .badge, .role-card span, .custom-radio-box, .ach-title-giant, .ach-desc-giant {
             font-family: 'Minecraft', sans-serif;
             text-transform: uppercase;
@@ -45,11 +47,15 @@
 
         body, html { 
             margin: 0; padding: 0; width: 100%; min-height: 100vh; 
+            /* Moderne Standardschrift für lange Texte */
             font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            color: var(--text-main); background-color: #111; 
+            color: var(--text-main); 
+            /* WICHTIG: Muss transparent sein, damit die Effekte dahinter sichtbar sind! */
+            background-color: transparent; 
             overflow-x: hidden; scroll-behavior: smooth; 
         }
         
+        /* --- CHEST START ANIMATION --- */
         #chest-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: #111111; z-index: 9999;
@@ -64,22 +70,32 @@
         @keyframes pulseChest { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
         .chest-open-effect { transform: scale(2) !important; filter: drop-shadow(0px 0px 50px var(--accent-main)) !important; opacity: 0; transition: all 0.5s ease; }
 
-        #fireworks-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9995; }
+        /* --- FIREWORKS CANVAS --- */
+        #fireworks-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9995; /* Über dem Backdrop, aber unter dem Banner */
+        }
         .hidden { display: none !important; }
 
+        /* --- HINTERGRUND-BILD + NETHER-PORTAL EFFEKTE --- */
         .background-container { 
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
             background-color: #09090b; 
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.9) 100%), url('background.jpg'); 
-            background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -3; 
+            background-image: 
+                linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.9) 100%), 
+                url('background.jpg'); 
+            background-size: cover; background-position: center; background-repeat: no-repeat; 
+            z-index: -3; 
         }
 
+        /* Sanftes Nether Leuchten von unten */
         .background-swirl {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: radial-gradient(circle at 50% 100%, rgba(148, 0, 211, 0.3) 0%, rgba(0, 0, 0, 0) 60%);
             z-index: -2; pointer-events: none;
         }
 
+        /* Schwebende Nether-Partikel am Boden */
         .background-particles {
             position: fixed; bottom: 0; left: 0; width: 100%; height: 50vh;
             background-image: 
@@ -91,18 +107,26 @@
                 radial-gradient(4px 4px at 850px 140px, rgba(218, 112, 214, 0.7) 50%, transparent 100%),
                 radial-gradient(3px 3px at 1050px 60px, rgba(232, 162, 255, 0.9) 50%, transparent 100%);
             background-repeat: repeat; background-size: 1200px 350px;
-            animation: floatNetherParticles 8s linear infinite; pointer-events: none; z-index: -1;
+            animation: floatNetherParticles 8s linear infinite;
+            pointer-events: none; z-index: -1;
         }
 
-        @keyframes floatNetherParticles { 0% { transform: translateY(0px); opacity: 0.8; } 50% { opacity: 0.3; } 100% { transform: translateY(-100px); opacity: 0.8; } }
+        @keyframes floatNetherParticles {
+            0% { transform: translateY(0px); opacity: 0.8; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(-100px); opacity: 0.8; }
+        }
         
         #main-content { display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 900px; margin: 0 auto; padding: 60px 20px 20px 20px; box-sizing: border-box; gap: 40px; position: relative; z-index: 1;}
 
         .hero-section { width: 100%; text-align: center; }
         .hero-section h1 { font-size: 4rem; line-height: 1.1; margin: 0 0 20px 0; text-shadow: 4px 4px 0px #000; letter-spacing: 0.05em;}
         .hero-section h1 .highlight { color: var(--accent-main); }
+        
         .badge { display: inline-block; background-color: var(--accent-main); color: #ffffff; padding: 8px 16px; font-size: 1.2rem; margin-bottom: 25px; border: 2px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.5); text-shadow: 2px 2px 0px #000; letter-spacing: 0.05em; }
+        
         .hero-section p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; max-width: 750px; margin-left: auto; margin-right: auto; font-weight: 600;}
+        
         .hero-image-link { display: inline-block; width: 100%; max-width: 600px; margin-top: 20px; transition: transform 0.1s; }
         .hero-image-link:active { transform: translate(4px, 4px); }
         .hero-image { width: 100%; height: auto; border: 4px solid #000; box-shadow: 8px 8px 0px rgba(0,0,0,0.6); background-color: #000; display: block; }
@@ -110,31 +134,61 @@
         .form-section { width: 100%; max-width: 800px; }
         .launcher-panel { background: rgba(30, 30, 30, 0.95); border: 4px solid #000; padding: 50px 50px; text-align: left; box-shadow: inset 4px 4px 0px rgba(255,255,255,0.05), 8px 8px 0px rgba(0,0,0,0.6); }
 
-        #success-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9990; padding: 20px; box-sizing: border-box; }
-        .giant-achievement { background: #212121; border: 4px solid #000; box-shadow: inset 4px 4px 0px rgba(255,255,255,0.2), 10px 10px 0px rgba(0,0,0,0.8), 0 0 120px rgba(176, 87, 248, 0.6); display: flex; align-items: center; padding: 40px; gap: 35px; max-width: 800px; width: 100%; animation: popInGiant 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; position: relative; z-index: 9999; }
-        @keyframes popInGiant { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        .ach-icon-giant { width: 128px; height: 128px; border: 4px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.5); image-rendering: pixelated; background: #000; flex-shrink: 0; }
+        /* --- NEUER SUCCESS SCREEN (GIANT ACHIEVEMENT ENDSCREEN) --- */
+        #success-screen { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(0,0,0,0.85); 
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 9990; padding: 20px; box-sizing: border-box;
+        }
+
+        .giant-achievement {
+            background: #212121; border: 4px solid #000;
+            box-shadow: inset 4px 4px 0px rgba(255,255,255,0.2), 10px 10px 0px rgba(0,0,0,0.8), 0 0 120px rgba(176, 87, 248, 0.6);
+            display: flex; align-items: center; padding: 40px; gap: 35px;
+            max-width: 800px; width: 100%;
+            animation: popInGiant 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative; z-index: 9999;
+        }
+
+        @keyframes popInGiant {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .ach-icon-giant {
+            width: 128px; height: 128px; border: 4px solid #000;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.5); image-rendering: pixelated; background: #000; flex-shrink: 0;
+        }
+        
         .ach-content-giant { display: flex; flex-direction: column; text-align: left; }
         .ach-title-giant { color: #FFFF55; font-size: 2.5rem; margin-bottom: 8px; text-shadow: 3px 3px 0px #000; letter-spacing: 0.05em; }
         .ach-desc-giant { color: #FFF; font-size: 3.5rem; text-shadow: 4px 4px 0px #000; margin-bottom: 15px; letter-spacing: 0.05em;}
         .ach-subtext { color: var(--text-muted); font-size: 1.3rem; margin: 0; font-weight: 600; line-height: 1.5; font-family: "Segoe UI", sans-serif;}
 
+        /* --- FORMULAR ELEMENTE --- */
         .form-group { margin-bottom: 35px; }
         label.main-label { display: block; margin-bottom: 12px; font-size: 1.2rem; color: var(--text-main); text-shadow: 1px 1px 0px #000; letter-spacing: 0.05em;}
         .asterisk { color: var(--mc-red); }
         
-        /* Erlaubt Texteingabe, aber keine UI Manipulation */
         input[type="text"], input[type="number"], textarea { 
             width: 100%; padding: 16px 18px; background: #111; border: 2px solid #000; color: var(--text-main); font-size: 1.1rem; box-sizing: border-box; transition: all 0.1s; font-family: inherit; box-shadow: inset 4px 4px 0px rgba(0,0,0,0.6); font-weight: 600;
             -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
         }
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus { outline: none; border-color: var(--accent-main); background: #151515; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { opacity: 1; height: 30px; cursor: pointer; }
         
         .hint-image { width: 100%; max-width: 400px; margin-bottom: 12px; border: 2px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.5); pointer-events: none;}
         
+        /* --- SKIN SYNC BEREICH --- */
         .skin-sync-container { display: flex; gap: 20px; align-items: stretch; flex-wrap: wrap; }
         .skin-input-area { flex: 2; min-width: 250px; }
-        .skin-preview-box { flex: 1; min-width: 180px; background: #111; border: 2px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px; transition: all 0.3s ease; opacity: 1; transform: scale(1); }
+        .skin-preview-box {
+            flex: 1; min-width: 180px; background: #111; border: 2px solid #000; 
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 15px;
+            transition: all 0.3s ease; opacity: 1; transform: scale(1);
+        }
         .skin-preview-box.hidden { opacity: 0; transform: scale(0.9); pointer-events: none; display: none; }
         .skin-preview-img { height: 140px; image-rendering: pixelated; filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); margin-bottom: 15px; pointer-events: none;}
         .skin-confirm { background: #222; width: 100%; padding: 10px; border: 2px solid #000; text-align: center; }
@@ -145,6 +199,7 @@
         .custom-radio-label { display: block; position: relative; cursor: pointer; }
         .custom-radio-label input[type="radio"] { position: absolute; opacity: 0; cursor: pointer; }
         .custom-radio-box { display: flex; align-items: center; justify-content: center; padding: 16px 20px; background: #27272a; border: 4px solid #000; font-size: 1.2rem; color: var(--text-muted); transition: all 0.1s; text-align: center; height: 100%; box-sizing: border-box; box-shadow: 4px 4px 0px rgba(0,0,0,0.5); text-shadow: 1px 1px 0px #000; letter-spacing: 0.05em;}
+        
         .custom-radio-label:hover .custom-radio-box { background: #3f3f46; color: #fff; transform: translate(-2px, -2px); box-shadow: 6px 6px 0px rgba(0,0,0,0.5);}
         .custom-radio-label input[type="radio"]:checked ~ .custom-radio-box { background: var(--accent-main); color: #fff; box-shadow: 0px 0px 0px rgba(0,0,0,0); transform: translate(4px, 4px); }
         .custom-radio-label input[type="radio"].radio-no:checked ~ .custom-radio-box { background: var(--mc-red-dark); }
@@ -159,6 +214,7 @@
         .role-card:hover { background: #3f3f46; transform: translate(-2px, -2px); box-shadow: 8px 8px 0px rgba(0,0,0,0.7);}
         .role-card .emote { width: 80px; height: 80px; margin-bottom: 20px; object-fit: contain; filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); pointer-events: none;}
         .role-card span { font-size: 1.6rem; text-shadow: 2px 2px 0px #000; letter-spacing: 0.05em; color: var(--text-muted); }
+        
         .role-card.mod.active { background: var(--mc-green-dark); box-shadow: 0px 0px 0px rgba(0,0,0,0); transform: translate(6px, 6px); }
         .role-card.mod.active span { color: #fff; }
         .role-card.vip.active { background: var(--vip-color); box-shadow: 0px 0px 0px rgba(0,0,0,0); transform: translate(6px, 6px); }
@@ -185,17 +241,21 @@
 </head>
 <body>
 
+    <!-- LADEBILDSCHIRM (WIRD GENERIERT...) -->
     <div id="chest-overlay">
         <img src="https://minotar.net/helm/MHF_Chest/128.png" id="loading-chest" class="real-chest" alt="Chest">
         <div class="loading-text mc-font">WIRD GENERIERT...</div>
     </div>
 
+    <!-- HINTERGRUND EFFEKTE -->
     <div class="background-container"></div>
     <div class="background-swirl"></div>
     <div class="background-particles"></div>
 
+    <!-- FIREWORKS CANVAS -->
     <canvas id="fireworks-canvas" class="hidden"></canvas>
 
+    <!-- SUCCESS SCREEN (GIANT ACHIEVEMENT) -->
     <div id="success-screen" class="hidden">
         <div class="giant-achievement">
             <img src="https://minotar.net/helm/Steve/128.png" id="success-skin-icon" class="ach-icon-giant" alt="Dein Skin">
@@ -246,6 +306,7 @@
                             <input type="text" id="user_name" placeholder="Deine Antwort" required>
                         </div>
 
+                        <!-- MINECRAFT NAME MIT LIVE SKIN SYNC -->
                         <div class="form-group">
                             <label class="main-label mc-font" for="minecraft_name">Wie lautet dein Ingame Minecraft-Name? <span class="asterisk">*</span></label>
                             
@@ -370,6 +431,7 @@
         </div>
     </div>
 
+    <!-- Firebase Script und Logik -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -387,18 +449,15 @@
         const db = getFirestore(app);
 
         // --- FRONTEND SICHERHEIT (Anti-DevTools Script) ---
-        // BITTE BEACHTEN: Das blockiert nur normale Nutzer. 
-        // Die ECHTE Sicherheit (wer was lesen darf) muss in der Firebase Console unter "Firestore Database" -> "Rules" eingestellt werden!
-        
         // Rechtsklick blockieren
         document.addEventListener('contextmenu', event => event.preventDefault());
         
         // F12 und Tasten-Kombis blockieren
         document.onkeydown = function(e) {
             if(e.keyCode == 123) { return false; } // F12
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Strg+Shift+I
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } // Strg+Shift+C
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } // Strg+Shift+J
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } 
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } 
             if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Strg+U
         };
 
@@ -634,7 +693,6 @@
                 const role = document.getElementById('selectedRole').value;
                 const finalMcName = noMcCheck.checked ? '' : sanitizeInput(mcInput.value.trim());
 
-                // Sicherstellen, dass keine schädlichen Skripte in die Datenbank geschrieben werden
                 const bewerbungData = {
                     rolle: role,
                     name: sanitizeInput(document.getElementById('user_name').value),
