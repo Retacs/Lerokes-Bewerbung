@@ -639,7 +639,7 @@
 
                 const isPrivate = app.on_stream === 'nein';
                 const blurClass = isPrivate ? 'blur-content' : '';
-                const privateBadge = isPrivate ? '<div class="private-overlay-badge mc-font">🔒 Privat / Nicht streamen</div>' : '';
+                const privateBadge = isPrivate ? '<div class="private-overlay-badge mc-font">Privat / NUR OFFLINE</div>' : '';
 
                 html += `
                     <div class="search-list-item ${statusClass}" onclick="showDetail('${app.id}')">
@@ -679,7 +679,7 @@
 
                 const isPrivate = app.on_stream === 'nein';
                 const blurClass = isPrivate ? 'blur-content' : '';
-                const privateBadge = isPrivate ? '<div class="private-overlay-badge mc-font">🔒 Privat / Nicht streamen</div>' : '';
+                const privateBadge = isPrivate ? '<div class="private-overlay-badge mc-font">Privat / NUR OFFLINE</div>' : '';
 
                 html += `
                     <div class="ticket-card ${statusClass}" onclick="showDetail('${app.id}')">
