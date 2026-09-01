@@ -73,7 +73,7 @@
         /* --- FIREWORKS CANVAS --- */
         #fireworks-canvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 9995; /* Über dem Backdrop, aber unter dem Banner */
+            pointer-events: none; z-index: 9995;
         }
         .hidden { display: none !important; }
 
@@ -95,9 +95,9 @@
             z-index: -2; pointer-events: none;
         }
 
-        /* Schwebende Nether-Partikel am Boden */
+        /* PERFEKTER ENDLOS-LOOP FÜR DIE PARTIKEL */
         .background-particles {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 50vh;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background-image: 
                 radial-gradient(3px 3px at 30px 50px, rgba(218, 112, 214, 0.8) 50%, transparent 100%),
                 radial-gradient(4px 4px at 140px 120px, rgba(176, 87, 248, 0.9) 50%, transparent 100%),
@@ -106,15 +106,17 @@
                 radial-gradient(3px 3px at 650px 90px, rgba(176, 87, 248, 0.8) 50%, transparent 100%),
                 radial-gradient(4px 4px at 850px 140px, rgba(218, 112, 214, 0.7) 50%, transparent 100%),
                 radial-gradient(3px 3px at 1050px 60px, rgba(232, 162, 255, 0.9) 50%, transparent 100%);
-            background-repeat: repeat; background-size: 1200px 350px;
-            animation: floatNetherParticles 8s linear infinite;
+            background-repeat: repeat; 
+            background-size: 1200px 350px; /* Höhe ist exakt 350px */
+            animation: floatNetherParticles 12s linear infinite; /* Lineare Animation für perfekten Loop */
             pointer-events: none; z-index: -1;
         }
 
+        /* Wir verschieben nicht mehr das Element, sondern scrollen den Hintergrund endlos nach oben */
         @keyframes floatNetherParticles {
-            0% { transform: translateY(0px); opacity: 0.8; }
-            50% { opacity: 0.3; }
-            100% { transform: translateY(-100px); opacity: 0.8; }
+            0% { background-position: 0px 0px; opacity: 0.8; }
+            50% { opacity: 0.4; }
+            100% { background-position: 0px -350px; opacity: 0.8; } /* -350px ist genau ein Muster-Durchlauf */
         }
         
         #main-content { display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 900px; margin: 0 auto; padding: 60px 20px 20px 20px; box-sizing: border-box; gap: 40px; position: relative; z-index: 1;}
@@ -241,7 +243,7 @@
 </head>
 <body>
 
-    <!-- LADEBILDSCHIRM (WIRD GENERIERT...) -->
+    <!-- LADEBILDSCHIRM -->
     <div id="chest-overlay">
         <img src="https://minotar.net/helm/MHF_Chest/128.png" id="loading-chest" class="real-chest" alt="Chest">
         <div class="loading-text mc-font">WIRD GENERIERT...</div>
@@ -448,17 +450,14 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- FRONTEND SICHERHEIT (Anti-DevTools Script) ---
-        // Rechtsklick blockieren
+        // --- FRONTEND SICHERHEIT ---
         document.addEventListener('contextmenu', event => event.preventDefault());
-        
-        // F12 und Tasten-Kombis blockieren
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) { return false; } // F12
+            if(e.keyCode == 123) { return false; } 
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } 
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; } 
             if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Strg+U
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } 
         };
 
         // --- LADE ANIMATION AUSBLENDEN ---
@@ -510,7 +509,7 @@
                 let p = fParticles[i];
                 p.x += p.vx;
                 p.y += p.vy;
-                p.vy += 0.25; // Gravitation
+                p.vy += 0.25; 
                 p.life--;
                 
                 fireworksCtx.fillStyle = p.color;
@@ -550,7 +549,6 @@
         const skinConfirm = document.getElementById('skin_confirm_check');
         let typingTimer;
 
-        // XSS & HTML Tags aus Textfeldern filtern
         function sanitizeInput(input) {
             return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
@@ -719,15 +717,14 @@
 
                 await addDoc(collection(db, "bewerbungen"), bewerbungData);
 
-                // --- ERFOLG: SCREEN ANZEIGEN & FEUERWERK STARTEN ---
+                // --- ERFOLG ---
                 const displaySkin = finalMcName === '' ? 'Steve' : finalMcName;
                 successSkinIcon.src = `https://minotar.net/helm/${displaySkin}/128.png`;
                 
                 mainContent.style.display = 'none';
                 successScreen.classList.remove('hidden');
-                successScreen.style.display = 'flex';
+                
                 window.scrollTo(0, 0);
-
                 startMinecraftFireworks();
 
             } catch (error) {
